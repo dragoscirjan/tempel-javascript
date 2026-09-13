@@ -1,4 +1,4 @@
-import markdown from 'eslint-plugin-markdown';
+import markdown from '@eslint/markdown';
 
 /**
  * Create Markdown configuration
@@ -8,7 +8,7 @@ import markdown from 'eslint-plugin-markdown';
 export function createMarkdownConfig(options = {}) {
   const { rules: customRules = {}, plugins: customPlugins = {}, languageOptions: customLanguageOptions = {} } = options;
 
-  return markdown.configs.recommended.concat([
+  return markdown.configs.recommended.concat(markdown.configs.processor, [
     {
       name: 'tempel:markdown',
       files: ['**/*.md/*.js'],
@@ -30,7 +30,7 @@ export function createMarkdownConfig(options = {}) {
 }
 
 /** @type {const('eslint').Linter.Config[]} */
-export default markdown.configs.recommended.concat([
+export default markdown.configs.recommended.concat(markdown.configs.processor, [
   {
     name: 'tempel:markdown/code-blocks/js',
     files: ['**/*.md/*.js'],

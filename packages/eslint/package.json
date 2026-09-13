@@ -18,6 +18,7 @@
   "description": "EsLint configuration for Tempel",
   "dependencies": {
     "@eslint/js": "^9.39.5",
+    "@eslint/markdown": "^8.0.3",
     "@eslint/json": "^0.14.0",
     "@vitest/eslint-plugin": "^1.6.27",
     "eslint": "^9.39.5",
@@ -25,7 +26,6 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-json": "^4.0.1",
     "eslint-plugin-jsonc": "^2.21.0",
-    "eslint-plugin-markdown": "^5.1.0",
     "eslint-plugin-node-import": "^1.0.5",
     "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-toml": "^0.12.0",
