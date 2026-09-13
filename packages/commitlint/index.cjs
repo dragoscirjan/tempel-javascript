@@ -24,6 +24,7 @@ module.exports = (options = {}) => {
           },
           rules: {
             'references-empty': [2, 'never'],
+            'scope-empty': [2, 'never'],
             ...config.rules,
           },
         }

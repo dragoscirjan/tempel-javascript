@@ -24,11 +24,11 @@ The package supports ESM and CommonJS consumers. Pair it with a Husky `commit-ms
 
 ## GitHub issue IDs
 
-The root project enables `requireIssueId: true`, so commit messages must contain a GitHub issue reference:
+The root project enables `requireIssueId: true`, so commit headers must use the GitHub issue ID as the scope:
 
 ```text
-feat: add Jest support (#51)
-fix(eslint): replace deprecated plugin (#50)
+feat(#51): add Jest support
+fix(#50): replace deprecated plugin
 ```
 
 The reusable factory leaves this option disabled by default. Enable it in another project with:

@@ -62,7 +62,7 @@ export default commitlintConfig({
 });
 ```
 
-This accepts messages such as `feat: add Jest support (#51)` and rejects messages without a `#123` reference. The option defaults to `false` in the reusable factory.
+This accepts headers such as `feat(#51): add Jest support` and rejects headers without a `#123` issue scope. The option defaults to `false` in the reusable factory.
 
 For detailed rule configuration and usage, see the [commitlint documentation](https://commitlint.js.org/).
 

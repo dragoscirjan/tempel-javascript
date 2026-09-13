@@ -43,6 +43,7 @@ describe('commitlint configuration', () => {
 
     expect(config.parserPreset).toEqual({ parserOpts: GITHUB_ISSUE_PARSER_OPTIONS });
     expect(config.rules?.['references-empty']).toEqual([2, 'never']);
+    expect(config.rules?.['scope-empty']).toEqual([2, 'never']);
   });
 
   it('should allow overriding extends property', () => {
