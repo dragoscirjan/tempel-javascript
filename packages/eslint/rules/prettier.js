@@ -11,7 +11,7 @@ export function createPrettierConfig(options = {}) {
 
   return [
     {
-      name: 'templ:prettier',
+      name: 'tempel:prettier',
       files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
       plugins: {
         prettier,
@@ -61,7 +61,7 @@ export function createPrettierConfig(options = {}) {
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    name: 'templ:prettier',
+    name: 'tempel:prettier',
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     plugins: {
       prettier,

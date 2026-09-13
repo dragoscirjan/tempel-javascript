@@ -1,20 +1,20 @@
-name: "CI"
+name: 'CI'
 
 on:
   workflow_dispatch:
     inputs:
       skip-tests:
-        description: "Skip tests"
+        description: 'Skip tests'
         type: boolean
         required: false
         default: false
       skip-version-bump:
-        description: "Skip version bump"
+        description: 'Skip version bump'
         type: boolean
         required: false
         default: false
       force-publish:
-        description: "Force publish (even without version bump)"
+        description: 'Force publish (even without version bump)'
         type: boolean
         required: false
         default: false
@@ -25,7 +25,7 @@ on:
 
 jobs:
   ci:
-    name: "CI"
+    name: 'CI'
     outputs:
       version: ${{ steps.new_releases.outputs.version }}
     runs-on: ubuntu-latest

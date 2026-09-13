@@ -1,8 +1,8 @@
-# @templ-project/eslint
+# @tempel/eslint
 
 A comprehensive, modular ESLint configuration designed for JavaScript and TypeScript projects. This package provides a portable, opinionated set of linting rules that can be used across multiple projects to ensure consistent code quality and style.
 
-- [@templ-project/eslint](#templ-projecteslint)
+- [@tempel/eslint](#tempeleslint)
   - [Features](#features)
   - [Installation](#installation)
   - [Module Compatibility](#module-compatibility)
@@ -58,7 +58,7 @@ A comprehensive, modular ESLint configuration designed for JavaScript and TypeSc
 ## Installation
 
 ```bash
-npm install --save-dev @templ-project/eslint
+npm install --save-dev @tempel/eslint
 ```
 
 This package includes all necessary dependencies, so you don't need to install ESLint or any plugins separately.
@@ -73,9 +73,9 @@ For projects using ES modules, use the standard `.js` extension:
 
 ```javascript
 // eslint.config.js
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
-export default templEslintConfig;
+export default tempelEslintConfig;
 ```
 
 ### CommonJS Projects
@@ -84,9 +84,9 @@ For CommonJS projects, use the `.mjs` extension for your ESLint configuration fi
 
 ```javascript
 // eslint.config.mjs (note the .mjs extension)
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
-export default templEslintConfig;
+export default tempelEslintConfig;
 ```
 
 The `.mjs` extension tells Node.js to treat the ESLint configuration file as an ES module, while the rest of your project can remain CommonJS. ESLint supports this pattern natively.
@@ -100,9 +100,9 @@ The `.mjs` extension tells Node.js to treat the ESLint configuration file as an 
 Create an `eslint.config.mjs` file in your project root:
 
 ```javascript
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
-export default templEslintConfig;
+export default tempelEslintConfig;
 ```
 
 ### Extending the Configuration
@@ -110,10 +110,10 @@ export default templEslintConfig;
 You can extend the base configuration with your own rules:
 
 ```javascript
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
 export default [
-  ...templEslintConfig,
+  ...tempelEslintConfig,
   {
     // Your custom overrides
     rules: {
@@ -129,7 +129,7 @@ export default [
 For more control over the configuration, you can use the factory function approach:
 
 ```javascript
-import { createEslintConfig } from "@templ-project/eslint";
+import { createEslintConfig } from "@tempel/eslint";
 
 // Basic usage with all defaults
 export default createEslintConfig();
@@ -137,7 +137,7 @@ export default createEslintConfig();
 
 ```javascript
 // Alternative: Selective feature toggles
-import { createEslintConfig } from "@templ-project/eslint";
+import { createEslintConfig } from "@tempel/eslint";
 
 export default createEslintConfig({
   enableTypeScript: true, // Enable TypeScript rules (default: true)
@@ -152,7 +152,7 @@ export default createEslintConfig({
 
 ```javascript
 // Alternative: Custom rules and overrides
-import { createEslintConfig } from "@templ-project/eslint";
+import { createEslintConfig } from "@tempel/eslint";
 export default createEslintConfig({
   rules: {
     "no-console": "warn", // Global rule override
@@ -176,7 +176,7 @@ export default createEslintConfig({
 
 ```javascript
 // Alternative: Disable TypeScript but keep JavaScript
-import { createEslintConfig } from "@templ-project/eslint";
+import { createEslintConfig } from "@tempel/eslint";
 
 export default createEslintConfig({
   enableTypeScript: false, // Only JavaScript rules will be applied
@@ -188,7 +188,7 @@ export default createEslintConfig({
 You can also use individual rule set functions for granular control:
 
 ```javascript
-import { createJsAndTsConfig, createPrettierConfig, createYamlConfig } from "@templ-project/eslint";
+import { createJsAndTsConfig, createPrettierConfig, createYamlConfig } from "@tempel/eslint";
 
 export default [
   // Global ignores
@@ -210,13 +210,13 @@ export default [
 ### Adding Custom Ignores
 
 ```javascript
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
 export default [
   {
     ignores: ["custom-build/**", "legacy-code/**"],
   },
-  ...templEslintConfig,
+  ...tempelEslintConfig,
 ];
 ```
 
@@ -407,19 +407,19 @@ Special Node.js features:
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
-export default templEslintConfig;
+export default tempelEslintConfig;
 ```
 
 ### Existing Project Migration
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
 export default [
-  ...templEslintConfig,
+  ...tempelEslintConfig,
   {
     // Gradually adopt stricter rules
     rules: {
@@ -433,13 +433,13 @@ export default [
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
 export default [
   {
     ignores: ["packages/*/dist/**", "apps/*/build/**"],
   },
-  ...templEslintConfig,
+  ...tempelEslintConfig,
   {
     files: ["packages/shared/**"],
     rules: {
@@ -472,7 +472,7 @@ DEBUG=eslint:* npx eslint .
 
 ## Contributing
 
-This package is part of the Templ Project ecosystem. See the main repository for contribution guidelines.
+This package is part of the Tempel ecosystem. See the main repository for contribution guidelines.
 
 ## Changelog
 
@@ -480,4 +480,4 @@ See [CHANGELOG.md](./CHANGELOG.md) for version history and changes.
 
 ## License
 
-MIT © Templ Project / Dragos Cirjan
+MIT © Tempel / Dragos Cirjan

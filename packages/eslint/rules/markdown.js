@@ -10,7 +10,7 @@ export function createMarkdownConfig(options = {}) {
 
   return markdown.configs.recommended.concat([
     {
-      name: 'templ:markdown',
+      name: 'tempel:markdown',
       files: ['**/*.md/*.js'],
       plugins: {
         ...customPlugins,
@@ -32,7 +32,7 @@ export function createMarkdownConfig(options = {}) {
 /** @type {const('eslint').Linter.Config[]} */
 export default markdown.configs.recommended.concat([
   {
-    name: 'templ:markdown/code-blocks/js',
+    name: 'tempel:markdown/code-blocks/js',
     files: ['**/*.md/*.js'],
     rules: {
       'no-console': 'off',
@@ -44,7 +44,7 @@ export default markdown.configs.recommended.concat([
     },
   },
   {
-    name: 'templ:markdown/code-blocks/ts',
+    name: 'tempel:markdown/code-blocks/ts',
     files: ['**/*.md/*.ts'],
     rules: {
       'no-console': 'off',
@@ -57,7 +57,7 @@ export default markdown.configs.recommended.concat([
     },
   },
   {
-    name: 'templ:markdown/code-blocks/json',
+    name: 'tempel:markdown/code-blocks/json',
     files: ['**/*.md/*.json'],
     rules: {
       'no-dupe-keys': 'off',

@@ -1,4 +1,4 @@
-# @templ-project/commitlint
+# @tempel/commitlint
 
 A zero-configuration commitlint setup that extends `@commitlint/config-conventional` with a flexible configuration factory. This package provides an easy way to enforce [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) in your JavaScript and TypeScript projects.
 
@@ -12,7 +12,7 @@ A zero-configuration commitlint setup that extends `@commitlint/config-conventio
 ## Installation
 
 ```bash
-npm install --save-dev @templ-project/commitlint
+npm install --save-dev @tempel/commitlint
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ npm install --save-dev @templ-project/commitlint
 
 ```javascript
 // commitlint.config.js
-import commitlintConfig from '@templ-project/commitlint';
+import commitlintConfig from '@tempel/commitlint';
 
 export default commitlintConfig();
 ```
@@ -30,7 +30,7 @@ export default commitlintConfig();
 
 ```javascript
 // commitlint.config.js
-import commitlintConfig from '@templ-project/commitlint';
+import commitlintConfig from '@tempel/commitlint';
 
 export default commitlintConfig({
   rules: {
@@ -47,7 +47,7 @@ export default commitlintConfig({
 
 ```javascript
 // commitlint.config.js
-const commitlintConfig = require('@templ-project/commitlint');
+const commitlintConfig = require('@tempel/commitlint');
 
 module.exports = commitlintConfig();
 ```

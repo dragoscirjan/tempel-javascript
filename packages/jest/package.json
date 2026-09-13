@@ -1,0 +1,30 @@
+{
+  "name": "@tempel/jest",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": ["dist/", "package.json"],
+  "scripts": {
+    "build": "pnpm exec tsc -p .",
+    "prebuild": "rimraf ./dist",
+    "pretest": "pnpm run build",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest"
+  },
+  "author": "Dragos Cirjan",
+  "license": "MIT",
+  "description": "Jest configuration factory for Tempel projects",
+  "dependencies": {
+    "jest": "^30.5.1"
+  },
+  "devDependencies": {
+    "@tempel/vitest": "workspace:*",
+    "rimraf": "^6.1.3",
+    "typescript": "5.9.3",
+    "vitest": "^4.0.10"
+  }
+}

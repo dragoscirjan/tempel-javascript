@@ -6,7 +6,7 @@ import { execa } from 'execa';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-describe('@templ-project/eslint', () => {
+describe('@tempel/eslint', () => {
   describe('successful lints', () => {
     const successDir = path.join(__dirname, 'success');
 

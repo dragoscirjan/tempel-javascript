@@ -33,7 +33,7 @@ export function createJsAndTsConfig(options = {}) {
 
   const configs = [
     {
-      name: 'templ:global/node',
+      name: 'tempel:global/node',
       files: ['**/*.{js,mjs,cjs,jsx}'],
       ...esConfig,
     },
@@ -44,13 +44,13 @@ export function createJsAndTsConfig(options = {}) {
     configs.push({
       files: ['**/*.{ts,mts,cts,tsx}'],
       ...tsConfig,
-      name: 'templ:global/ts',
+      name: 'tempel:global/ts',
     });
   }
 
   if (enableVitest) {
     configs.push({
-      name: 'templ:globals/tests',
+      name: 'tempel:globals/tests',
       files: ['**/*.{e2e,test,spec}.{js,cjs,mjs,ts,cts,mts}'],
       ...vitest.configs.recommended,
       languageOptions: {
@@ -70,17 +70,17 @@ const tsConfig = getTsConfig(esConfig, tsConfigGlobal);
 
 export default [
   {
-    name: 'templ:global/node',
+    name: 'tempel:global/node',
     files: ['**/*.{js,mjs,cjs,jsx}'],
     ...esConfig,
   },
   {
     files: ['**/*.{ts,mts,cts,tsx}'],
     ...tsConfig,
-    name: 'templ:global/ts',
+    name: 'tempel:global/ts',
   },
   {
-    name: 'templ:globals/tests',
+    name: 'tempel:globals/tests',
     files: ['**/*.{e2e,test,spec}.{js,cjs,mjs,ts,cts,mts}'],
     ...vitest.configs.recommended,
     languageOptions: {

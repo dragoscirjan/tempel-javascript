@@ -1,8 +1,8 @@
-# @templ-project/vitest
+# @tempel/vitest
 
 A flexible, opinionated Vitest configuration factory designed for JavaScript and TypeScript projects. This package provides a portable testing configuration that works out of the box with sensible defaults while allowing easy customization and extension for specific project needs.
 
-- [@templ-project/vitest](#templ-projectvitest)
+- [@tempel/vitest](#tempelvitest)
   - [Features](#features)
   - [Installation](#installation)
   - [Module Compatibility](#module-compatibility)
@@ -60,7 +60,7 @@ A flexible, opinionated Vitest configuration factory designed for JavaScript and
 ## Installation
 
 ```bash
-npm install --save-dev @templ-project/vitest
+npm install --save-dev @tempel/vitest
 ```
 
 This package includes Vitest as a dependency, so you don't need to install it separately.
@@ -78,7 +78,7 @@ This package is **ESM-only** and requires projects to use ES modules for the Vit
 Create a `vitest.config.js` file in your project root:
 
 ```javascript
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig();
 ```
@@ -90,7 +90,7 @@ This provides a complete Vitest configuration with sensible defaults for most pr
 Override specific settings while keeping the defaults:
 
 ```javascript
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig({
   // Custom test file patterns
@@ -119,7 +119,7 @@ export default defineConfig({
 Pass any Vitest configuration options:
 
 ```javascript
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig({
   // Custom environment
@@ -263,14 +263,14 @@ The package works seamlessly with TypeScript projects. Ensure your `tsconfig.jso
 
 ```json
 {
-  "extends": "@templ-project/tsconfig/vitest.json",
+  "extends": "@tempel/tsconfig/vitest.json",
   "include": ["src/**/*", "test/**/*", "**/*.test.ts", "**/*.spec.ts"]
 }
 ```
 
 ### ESLint Integration
 
-When using `@templ-project/eslint`, test-specific rules are automatically applied to test files matching the patterns defined in this configuration.
+When using `@tempel/eslint`, test-specific rules are automatically applied to test files matching the patterns defined in this configuration.
 
 ### CI/CD Integration
 
@@ -291,7 +291,7 @@ The configuration works well in CI environments:
 
 ```javascript
 // vitest.config.js
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig(); // Uses all defaults
 ```
@@ -300,7 +300,7 @@ export default defineConfig(); // Uses all defaults
 
 ```javascript
 // vitest.config.e2e.js
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig({
   include: ["test/**/*.e2e.{js,ts}"],
@@ -313,7 +313,7 @@ export default defineConfig({
 
 ```javascript
 // packages/shared/vitest.config.js
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig({
   include: ["src/**/*.{test,spec}.{js,ts}"],
@@ -327,7 +327,7 @@ export default defineConfig({
 
 ```javascript
 // vitest.config.js
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig({
   include: [
@@ -342,7 +342,7 @@ export default defineConfig({
 
 ```javascript
 // vitest.config.js
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 
 export default defineConfig({
   coverage: {
@@ -467,19 +467,19 @@ npm test
 
 ```javascript
 // ✅ Correct
-import { defineConfig } from "@templ-project/vitest";
+import { defineConfig } from "@tempel/vitest";
 export default defineConfig();
 ```
 
 ```javascript
 // ❌ Incorrect (CommonJS)
-const { defineConfig } = require("@templ-project/vitest");
+const { defineConfig } = require("@tempel/vitest");
 module.exports = defineConfig();
 ```
 
 **Test files not found**: Check that your test files match the default patterns or customize the `include` option.
 
-**TypeScript errors**: Ensure your `tsconfig.json` includes test files and extends the appropriate Templ Project configuration.
+**TypeScript errors**: Ensure your `tsconfig.json` includes test files and extends the appropriate Tempel configuration.
 
 **Coverage issues**: Verify that your source files are not excluded by the coverage configuration.
 
@@ -509,7 +509,7 @@ export default defineConfig({
 
 ## Contributing
 
-This package is part of the Templ Project ecosystem. See the main repository for contribution guidelines.
+This package is part of the Tempel ecosystem. See the main repository for contribution guidelines.
 
 ## Changelog
 

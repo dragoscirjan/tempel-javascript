@@ -6,7 +6,7 @@ import { execa } from 'execa';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-describe('@templ-project/prettier', () => {
+describe('@tempel/prettier', () => {
   describe('successful prettify', () => {
     const successDir = path.join(__dirname, 'success');
 

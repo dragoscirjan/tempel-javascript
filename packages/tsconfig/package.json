@@ -1,19 +1,12 @@
 {
-  "name": "@templ-project/tsconfig",
+  "name": "@tempel/tsconfig",
   "version": "0.4.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tsconfig/bases.git",
     "directory": "bases"
   },
-  "files": [
-    "base.json",
-    "browser.json",
-    "cjs.json",
-    "esm.json",
-    "vitest.json",
-    "package.json"
-  ],
+  "files": ["base.json", "browser.json", "cjs.json", "esm.json", "vitest.json", "package.json"],
   "scripts": {
     "build": "node build.js",
     "pretest": "npm run build",
@@ -22,12 +15,12 @@
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "description": "TSConfig for Templ Project",
+  "description": "TSConfig for Tempel",
   "dependencies": {
-    "@templ-project/vitest": "^0.3.0",
-    "@tsconfig/node22": "^22.0.2",
-    "execa": "^9.6.0",
-    "typescript": "^5.9.3"
+    "@tempel/vitest": "workspace:*",
+    "@tsconfig/node22": "^22.0.6",
+    "execa": "^10.0.1",
+    "typescript": "5.9.3"
   },
   "main": "build.js",
   "directories": {
@@ -38,6 +31,6 @@
   },
   "homepage": "https://github.com/tsconfig/bases#readme",
   "devDependencies": {
-    "@templ-project/eslint": "^1.2.0"
+    "@tempel/eslint": "workspace:*"
   }
 }

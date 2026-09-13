@@ -26,13 +26,13 @@ describe('ESLint Factory Function', () => {
       // Should contain configurations for all supported file types
       const configNames = config.map((c) => c.name).filter(Boolean);
 
-      expect(configNames).toContain('templ:global/node');
-      expect(configNames).toContain('templ:global/ts');
-      expect(configNames).toContain('templ:prettier');
-      expect(configNames).toContain('templ:yaml');
-      expect(configNames).toContain('templ:json');
-      expect(configNames).toContain('templ:markdown');
-      expect(configNames).toContain('templ:text');
+      expect(configNames).toContain('tempel:global/node');
+      expect(configNames).toContain('tempel:global/ts');
+      expect(configNames).toContain('tempel:prettier');
+      expect(configNames).toContain('tempel:yaml');
+      expect(configNames).toContain('tempel:json');
+      expect(configNames).toContain('tempel:markdown');
+      expect(configNames).toContain('tempel:text');
     });
 
     it('should include default ignores configuration', () => {
@@ -58,36 +58,36 @@ describe('ESLint Factory Function', () => {
       const config = createEslintConfig({ enableTypeScript: false });
 
       const configNames = config.map((c) => c.name).filter(Boolean);
-      expect(configNames).not.toContain('templ:global/ts');
-      expect(configNames).toContain('templ:global/node'); // JS should still be included
+      expect(configNames).not.toContain('tempel:global/ts');
+      expect(configNames).toContain('tempel:global/node'); // JS should still be included
     });
 
     it('should exclude Prettier rules when disabled', () => {
       const config = createEslintConfig({ enablePrettier: false });
 
       const configNames = config.map((c) => c.name).filter(Boolean);
-      expect(configNames).not.toContain('templ:prettier');
+      expect(configNames).not.toContain('tempel:prettier');
     });
 
     it('should exclude YAML rules when disabled', () => {
       const config = createEslintConfig({ enableYaml: false });
 
       const configNames = config.map((c) => c.name).filter(Boolean);
-      expect(configNames).not.toContain('templ:yaml');
+      expect(configNames).not.toContain('tempel:yaml');
     });
 
     it('should exclude JSON rules when disabled', () => {
       const config = createEslintConfig({ enableJson: false });
 
       const configNames = config.map((c) => c.name).filter(Boolean);
-      expect(configNames).not.toContain('templ:json');
+      expect(configNames).not.toContain('tempel:json');
     });
 
     it('should exclude Markdown rules when disabled', () => {
       const config = createEslintConfig({ enableMarkdown: false });
 
       const configNames = config.map((c) => c.name).filter(Boolean);
-      expect(configNames).not.toContain('templ:markdown');
+      expect(configNames).not.toContain('tempel:markdown');
     });
 
     it('should allow multiple feature toggles simultaneously', () => {
@@ -98,11 +98,11 @@ describe('ESLint Factory Function', () => {
       });
 
       const configNames = config.map((c) => c.name).filter(Boolean);
-      expect(configNames).not.toContain('templ:yaml');
-      expect(configNames).not.toContain('templ:markdown');
-      expect(configNames).not.toContain('templ:json');
-      expect(configNames).toContain('templ:global/node');
-      expect(configNames).toContain('templ:prettier');
+      expect(configNames).not.toContain('tempel:yaml');
+      expect(configNames).not.toContain('tempel:markdown');
+      expect(configNames).not.toContain('tempel:json');
+      expect(configNames).toContain('tempel:global/node');
+      expect(configNames).toContain('tempel:prettier');
     });
   });
 
@@ -134,7 +134,7 @@ describe('ESLint Factory Function', () => {
       const config = createEslintConfig({ rules: customRules });
 
       // Find JS/TS configs and verify rules are merged
-      const jsConfig = config.find((c) => c.name === 'templ:global/node');
+      const jsConfig = config.find((c) => c.name === 'tempel:global/node');
       expect(jsConfig?.rules?.['no-console']).toBe('warn');
       expect(jsConfig?.rules?.['max-len']).toEqual(['error', { code: 100 }]);
     });
@@ -148,7 +148,7 @@ describe('ESLint Factory Function', () => {
         },
       });
 
-      const prettierConfig = config.find((c) => c.name === 'templ:prettier');
+      const prettierConfig = config.find((c) => c.name === 'tempel:prettier');
       expect(prettierConfig?.rules?.['prettier/prettier']).toEqual(['error', { printWidth: 100 }]);
     });
   });
@@ -157,14 +157,14 @@ describe('ESLint Factory Function', () => {
     it('should support different environments', () => {
       const config = createEslintConfig({ environments: ['browser', 'node'] });
 
-      const jsConfig = config.find((c) => c.name === 'templ:global/node');
+      const jsConfig = config.find((c) => c.name === 'tempel:global/node');
       expect(jsConfig?.languageOptions?.globals).toBeDefined();
     });
 
     it('should default to node environment', () => {
       const config = createEslintConfig();
 
-      const jsConfig = config.find((c) => c.name === 'templ:global/node');
+      const jsConfig = config.find((c) => c.name === 'tempel:global/node');
       expect(jsConfig?.languageOptions?.globals).toHaveProperty('__ENV');
     });
   });
@@ -177,8 +177,8 @@ describe('ESLint Factory Function', () => {
         expect(Array.isArray(configs)).toBe(true);
         expect(configs.length).toBeGreaterThanOrEqual(2);
 
-        const jsConfig = configs.find((c) => c.name === 'templ:global/node');
-        const tsConfig = configs.find((c) => c.name === 'templ:global/ts');
+        const jsConfig = configs.find((c) => c.name === 'tempel:global/node');
+        const tsConfig = configs.find((c) => c.name === 'tempel:global/ts');
 
         expect(jsConfig).toBeDefined();
         expect(tsConfig).toBeDefined();
@@ -188,7 +188,7 @@ describe('ESLint Factory Function', () => {
         const customRules = { 'no-console': 'warn' };
         const configs = createJsAndTsConfig({ rules: customRules });
 
-        const jsConfig = configs.find((c) => c.name === 'templ:global/node');
+        const jsConfig = configs.find((c) => c.name === 'tempel:global/node');
         expect(jsConfig?.rules?.['no-console']).toBe('warn');
       });
     });
@@ -199,7 +199,7 @@ describe('ESLint Factory Function', () => {
 
         expect(Array.isArray(configs)).toBe(true);
         expect(configs.length).toBe(1);
-        expect(configs[0].name).toBe('templ:prettier');
+        expect(configs[0].name).toBe('tempel:prettier');
       });
 
       it('should accept custom Prettier rules', () => {
@@ -218,7 +218,7 @@ describe('ESLint Factory Function', () => {
 
         expect(Array.isArray(configs)).toBe(true);
         expect(configs.length).toBeGreaterThanOrEqual(1);
-        const yamlConfig = configs.find((c) => c.name === 'templ:yaml');
+        const yamlConfig = configs.find((c) => c.name === 'tempel:yaml');
         expect(yamlConfig).toBeDefined();
       });
     });
@@ -229,7 +229,7 @@ describe('ESLint Factory Function', () => {
 
         expect(Array.isArray(configs)).toBe(true);
         expect(configs.length).toBeGreaterThanOrEqual(1);
-        const jsonConfig = configs.find((c) => c.name === 'templ:json');
+        const jsonConfig = configs.find((c) => c.name === 'tempel:json');
         expect(jsonConfig).toBeDefined();
       });
     });
@@ -240,7 +240,7 @@ describe('ESLint Factory Function', () => {
 
         expect(Array.isArray(configs)).toBe(true);
         expect(configs.length).toBeGreaterThanOrEqual(1);
-        const markdownConfig = configs.find((c) => c.name === 'templ:markdown');
+        const markdownConfig = configs.find((c) => c.name === 'tempel:markdown');
         expect(markdownConfig).toBeDefined();
       });
     });
@@ -251,7 +251,7 @@ describe('ESLint Factory Function', () => {
 
         expect(Array.isArray(configs)).toBe(true);
         expect(configs.length).toBeGreaterThanOrEqual(1);
-        const textConfig = configs.find((c) => c.name === 'templ:text');
+        const textConfig = configs.find((c) => c.name === 'tempel:text');
         expect(textConfig).toBeDefined();
       });
     });
@@ -289,7 +289,7 @@ describe('ESLint Factory Function', () => {
         },
       });
 
-      const jsConfig = config.find((c) => c.name === 'templ:global/node');
+      const jsConfig = config.find((c) => c.name === 'tempel:global/node');
       expect(jsConfig?.rules?.['node-import/prefer-node-protocol']).toBe('error');
       expect(jsConfig?.rules?.['no-console']).toBe('warn');
     });
@@ -304,17 +304,9 @@ describe('ESLint Factory Function', () => {
         expect(typeof cfg).toBe('object');
         expect(cfg).not.toBe(null);
 
-        if (cfg.files) {
-          expect(Array.isArray(cfg.files)).toBe(true);
-        }
-
-        if (cfg.rules) {
-          expect(typeof cfg.rules).toBe('object');
-        }
-
-        if (cfg.plugins) {
-          expect(typeof cfg.plugins).toBe('object');
-        }
+        expect(cfg.files === undefined || Array.isArray(cfg.files)).toBe(true);
+        expect(cfg.rules === undefined || typeof cfg.rules === 'object').toBe(true);
+        expect(cfg.plugins === undefined || typeof cfg.plugins === 'object').toBe(true);
       });
     });
   });

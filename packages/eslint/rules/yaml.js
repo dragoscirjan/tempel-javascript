@@ -11,7 +11,7 @@ export function createYamlConfig(options = {}) {
   return [
     ...yaml.configs['flat/recommended'],
     {
-      name: 'templ:yaml',
+      name: 'tempel:yaml',
       files: ['*.yaml', '**/*.yaml', '*.yml', '**/*.yml'],
       plugins: {
         ...customPlugins,
@@ -33,7 +33,7 @@ export function createYamlConfig(options = {}) {
 export default [
   ...yaml.configs['flat/recommended'],
   {
-    name: 'templ:yml/overrides',
+    name: 'tempel:yml/overrides',
     files: ['*.yaml', '**/*.yaml', '*.yml', '**/*.yml'],
     rules: {
       indent: ['error', 2],
