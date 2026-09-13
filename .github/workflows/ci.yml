@@ -75,7 +75,7 @@ jobs:
           pr_auto_merge: true
 
       - name: Install Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Publish Packages
         if: ${{ ( steps.releases.outputs.tag != '' && inputs.skip-version-bump != true ) || inputs.force-publish == true }}
