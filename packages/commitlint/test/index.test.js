@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import commitlintConfig from '../index.mjs';
+import commitlintConfig, { GITHUB_ISSUE_PARSER_OPTIONS } from '../index.mjs';
 
 describe('commitlint configuration', () => {
   it('should export a function', () => {
@@ -36,6 +36,13 @@ describe('commitlint configuration', () => {
         'type-enum': [2, 'always', ['feat', 'fix', 'docs', 'style', 'refactor', 'test', 'chore']],
       },
     });
+  });
+
+  it('should optionally require a GitHub issue ID in the header', () => {
+    const config = commitlintConfig({ requireIssueId: true });
+
+    expect(config.parserPreset).toEqual({ parserOpts: GITHUB_ISSUE_PARSER_OPTIONS });
+    expect(config.rules?.['references-empty']).toEqual([2, 'never']);
   });
 
   it('should allow overriding extends property', () => {

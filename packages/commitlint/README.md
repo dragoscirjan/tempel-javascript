@@ -54,14 +54,15 @@ module.exports = commitlintConfig();
 
 ## Configuration
 
-The configuration factory merges your options with the base `@commitlint/config-conventional` configuration:
+The configuration factory merges your options with the base `@commitlint/config-conventional` configuration. Pass `requireIssueId: true` to require a GitHub issue reference in the commit header:
 
 ```javascript
-export default (options = {}) => ({
-  extends: ['@commitlint/config-conventional'],
-  ...options,
+export default commitlintConfig({
+  requireIssueId: true,
 });
 ```
+
+This accepts messages such as `feat: add Jest support (#51)` and rejects messages without a `#123` reference. The option defaults to `false` in the reusable factory.
 
 For detailed rule configuration and usage, see the [commitlint documentation](https://commitlint.js.org/).
 
@@ -71,7 +72,7 @@ Install with Husky for automatic commit message validation:
 
 ```bash
 npm install --save-dev husky
-echo 'npx commitlint --edit $1' > .husky/commit-msg
+mise exec -- pnpm --filter ./packages/commitlint exec -- commitlint --config "$PWD/commitlint.config.mjs" --edit "$1"
 chmod +x .husky/commit-msg
 ```
 
