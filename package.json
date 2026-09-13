@@ -2,6 +2,7 @@
   "name": "@tempel/javascript",
   "version": "0.3.0",
   "type": "module",
+  "packageManager": "pnpm@10.33.0",
   "pnpm": {
     "overrides": {
       "typescript": "5.9.3",
@@ -13,17 +14,20 @@
   "main": "dist/index.js",
   "private": true,
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "pnpm -r run --if-present build",
     "clear": "run-s clear:*",
     "clear:node-modules": "find . -name \"node_modules\" -maxdepth 1 -exec rm -rf {} \\;",
     "clear:lock-files": "rm -rf yarn.lock package-lock.json",
     "lint": "cross-env DEBUG=eslint:eslint npx eslint --fix .",
     "prepare": "pnpm exec husky",
-    "test": "npm run test --workspaces --if-present",
+    "test": "pnpm -r --workspace-concurrency=1 run --if-present test",
     "docs": "vitepress build docs",
     "serve": "vitepress dev docs",
     "docs:dev": "vitepress dev docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "changeset": "changeset",
+    "version:modules": "changeset version && pnpm install --lockfile-only",
+    "release:modules": "pnpm run build && changeset publish"
   },
   "repository": {
     "type": "git",
@@ -42,7 +46,8 @@
     "husky": "^9.1.7",
     "jscpd": "^5.2.0",
     "lint-staged": "^16.2.4",
-    "vitepress": "^1.6.4"
+    "vitepress": "^1.6.4",
+    "@changesets/cli": "^2.29.8"
   },
   "workspaces": ["packages/*"],
   "lint-staged": {

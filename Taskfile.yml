@@ -3,29 +3,9 @@ version: '3'
 tasks:
   publish:
     cmds:
-      - |
-        echo "//registry.npmjs.org/:_authToken={{ .NPM_TOKEN }}" > ~/.npmrc
-        npm run build
-        find ./packages -type d -maxdepth 1 -mindepth 1 | while read pkg; do
-          if [ -d "$pkg" ]; then
-            cd "$pkg"
-
-            latest_published_version=$(npm view $(cat package.json | jq -r '.name') version)
-            latest_local_version=$(cat package.json | jq -r '.version')
-
-            if [ "$latest_published_version" != "$latest_local_version" ]; then
-              echo "> Publishing $pkg@$latest_local_version"
-              npm publish --access public
-            fi
-
-            cd -
-          else
-            echo "> Skipping $pkg; Version $latest_local_version already published"
-          fi
-        done
-    desc: 'Publish all packages'
+      - pnpm run release:modules
+    desc: 'Build and publish versioned packages through Changesets'
     summary: |
-      Run example:
-        task publish NPM_TOKEN=token
-    vars:
-      NPM_TOKEN: '{{ .NPM_TOKEN | default "none" }}'
+      Configure NODE_AUTH_TOKEN before publishing:
+        export NODE_AUTH_TOKEN=token
+        task publish

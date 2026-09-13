@@ -9,7 +9,7 @@
   "files": ["base.json", "browser.json", "cjs.json", "esm.json", "vitest.json", "package.json"],
   "scripts": {
     "build": "node build.js",
-    "pretest": "npm run build",
+    "pretest": "pnpm run build",
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest"
   },

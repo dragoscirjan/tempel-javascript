@@ -11,6 +11,7 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       { text: 'Getting started', link: '/getting-started' },
       { text: 'Packages', link: '/packages/' },
+      { text: 'Releases', link: '/releases' },
       { text: 'Roadmap', link: '/roadmap' },
     ],
     sidebar: {

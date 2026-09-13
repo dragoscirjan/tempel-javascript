@@ -11,7 +11,7 @@
   "scripts": {
     "build": "pnpm exec tsc -p .",
     "prebuild": "rimraf ./dist",
-    "pretest": "npm run build",
+    "pretest": "pnpm run build",
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest"
   },

@@ -32,7 +32,7 @@ mise run deps:sync
 mise run validate
 ```
 
-Useful commands include `mise run build`, `mise run test`, `mise run lint`, `mise run format`, and `mise run docs:preview`.
+Useful commands include `mise run build`, `mise run test`, `mise run lint`, `mise run format`, and `mise run docs:preview`. Package releases use Changesets; run `mise run changeset` when preparing a package change and see the [release guide](docs/releases.md).
 
 ## License
 
