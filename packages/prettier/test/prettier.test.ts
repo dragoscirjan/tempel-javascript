@@ -50,10 +50,10 @@ function setupTest({ throws = false, expects = {}, file }: TestOptions) {
       fs.copyFileSync(file.original, file.renamed);
 
       try {
-        // Run Prettier on the renamed file
-        await execa({
+        // Run the workspace-local Prettier binary to avoid slow npx resolution.
+        await execa('prettier', ['--config', './index.cjs', file.renamed], {
           preferLocal: true,
-        })`npx prettier --config ./index.cjs ${file.renamed}`;
+        });
       } catch (e) {
         prettierError = e as Error;
         process.env.DEBUG && console.log(`prettier failed with`, prettierError);

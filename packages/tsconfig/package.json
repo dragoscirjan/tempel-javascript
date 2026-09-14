@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/tsconfig/bases#readme",
   "devDependencies": {
-    "@tempel/eslint": "workspace:*"
+    "@tempel/eslint": "workspace:*",
+    "vitest": "^4.0.10"
   }
 }
