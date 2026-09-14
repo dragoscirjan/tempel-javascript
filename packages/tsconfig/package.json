@@ -26,8 +26,8 @@
   "dependencies": {
     "@templ-project/vitest": "^0.3.0",
     "@tsconfig/node22": "^22.0.2",
-    "execa": "^9.6.0",
-    "typescript": "^5.9.3"
+    "execa": "^10.0.1",
+    "typescript": "^7.0.2"
   },
   "main": "build.js",
   "directories": {
