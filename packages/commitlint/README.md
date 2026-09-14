@@ -20,7 +20,7 @@ npm install --save-dev @tempel/commitlint
 ### Basic Usage
 
 ```javascript
-// commitlint.config.js
+// commitlint.config.mjs
 import commitlintConfig from '@tempel/commitlint';
 
 export default commitlintConfig();
@@ -29,13 +29,12 @@ export default commitlintConfig();
 ### With Custom Options
 
 ```javascript
-// commitlint.config.js
+// commitlint.config.mjs
 import commitlintConfig from '@tempel/commitlint';
 
 export default commitlintConfig({
   rules: {
-    'header-max-length': [2, 'always', 72],
-    'scope-empty': [2, 'never']
+    'header-max-length': [2, 'always', 72]
   },
   ignores: [
     (commit) => commit.includes('[skip ci]')
@@ -46,7 +45,7 @@ export default commitlintConfig({
 ### CommonJS
 
 ```javascript
-// commitlint.config.js
+// commitlint.config.cjs
 const commitlintConfig = require('@tempel/commitlint');
 
 module.exports = commitlintConfig();
@@ -81,7 +80,7 @@ chmod +x .husky/commit-msg
 The package includes comprehensive tests validating configuration factory behavior:
 
 ```bash
-npm test
+mise run test
 ```
 
 ## Documentation

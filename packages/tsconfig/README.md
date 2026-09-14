@@ -226,11 +226,11 @@ const tsconfig = {
 
 ```bash
 # Regenerate all configuration files
-npm run build
+mise run build
 
 # Run tests with fresh configurations
-npm run pretest
-npm test
+mise run build
+mise run test
 ```
 
 ## Testing

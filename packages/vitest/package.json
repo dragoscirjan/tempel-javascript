@@ -17,7 +17,7 @@
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "description": "EsLint configuration for Tempel",
+  "description": "Vitest configuration factory for Tempel",
   "dependencies": {
     "@tempel/tsconfig": "workspace:*",
     "vitest": "^4.0.10"

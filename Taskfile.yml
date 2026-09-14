@@ -3,9 +3,9 @@ version: '3'
 tasks:
   publish:
     cmds:
-      - pnpm run release:modules
+      - mise run release:modules
     desc: 'Build and publish versioned packages through Changesets'
     summary: |
       Configure NODE_AUTH_TOKEN before publishing:
         export NODE_AUTH_TOKEN=token
-        task publish
+        mise run release:modules

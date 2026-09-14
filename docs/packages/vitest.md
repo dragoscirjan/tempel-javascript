@@ -5,9 +5,9 @@
 ## Basic usage
 
 ```js
-import { defineConfig } from "@tempel/vitest";
+import tempelVitestConfig from "@tempel/vitest";
 
-export default defineConfig();
+export default tempelVitestConfig();
 ```
 
 ## Defaults
@@ -25,9 +25,9 @@ export default defineConfig();
 Any supported Vitest test option can be passed to the factory:
 
 ```js
-import { defineConfig } from "@tempel/vitest";
+import tempelVitestConfig from "@tempel/vitest";
 
-export default defineConfig({
+export default tempelVitestConfig({
   environment: "jsdom",
   setupFiles: ["./test/setup.ts"],
   coverage: {

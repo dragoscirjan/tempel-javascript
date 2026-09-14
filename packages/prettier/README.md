@@ -328,7 +328,7 @@ The package includes a comprehensive test suite that validates:
 Run tests:
 
 ```bash
-npm test
+mise run test
 ```
 
 Test files are organized as:

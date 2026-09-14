@@ -5,7 +5,7 @@
 Install the packages you need as development dependencies:
 
 ```bash
-pnpm add -D @tempel/eslint @tempel/prettier @tempel/tsconfig @tempel/vitest @tempel/jest @tempel/commitlint
+pnpm add -D @tempel/eslint @tempel/prettier @tempel/tsconfig @tempel/vitest @tempel/jest @tempel/commitlint husky
 ```
 
 Every package is independent; installing the complete set is optional.
@@ -58,9 +58,9 @@ Available presets are `base.json`, `browser.json`, `cjs.json`, `esm.json`, and `
 Create `vitest.config.js`:
 
 ```js
-import { defineConfig } from "@tempel/vitest";
+import tempelVitestConfig from "@tempel/vitest";
 
-export default defineConfig();
+export default tempelVitestConfig();
 ```
 
 The defaults discover `*.spec.js`, `*.test.js`, `*.e2e.js` and their TypeScript equivalents.
@@ -79,7 +79,7 @@ Jest uses the same `src`, `test`, and E2E naming conventions as the shared Vites
 
 ## Configure commit messages
 
-Create `commitlint.config.js`:
+Create `commitlint.config.mjs`:
 
 ```js
 import commitlintConfig from "@tempel/commitlint";

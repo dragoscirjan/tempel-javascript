@@ -154,7 +154,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## <small>0.0.2 (2025-06-24)</small>
+## <small>0.0.2 (2025-06-24) - legacy 2</small>
 
 * chore: added npm run test ([0ad47f9](https://github.com/dragoscirjan/tempel-javascript/commit/0ad47f9))
 * chore: added prettier module ([442ddad](https://github.com/dragoscirjan/tempel-javascript/commit/442ddad))

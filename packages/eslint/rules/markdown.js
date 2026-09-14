@@ -8,7 +8,7 @@ import markdown from '@eslint/markdown';
 export function createMarkdownConfig(options = {}) {
   const { rules: customRules = {}, plugins: customPlugins = {}, languageOptions: customLanguageOptions = {} } = options;
 
-  return markdown.configs.recommended.concat(markdown.configs.processor, [
+  return markdown.configs.processor.concat([
     {
       name: 'tempel:markdown',
       files: ['**/*.md/*.js'],
@@ -29,8 +29,11 @@ export function createMarkdownConfig(options = {}) {
   ]);
 }
 
+/** Markdown content rules for projects that lint Markdown outside processor mode. */
+export const markdownRecommendedConfig = markdown.configs.recommended;
+
 /** @type {const('eslint').Linter.Config[]} */
-export default markdown.configs.recommended.concat(markdown.configs.processor, [
+export default markdown.configs.processor.concat([
   {
     name: 'tempel:markdown/code-blocks/js',
     files: ['**/*.md/*.js'],

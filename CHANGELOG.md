@@ -163,7 +163,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## <small>0.0.3 (2025-06-27)</small>
+## <small>0.0.3 (2025-06-27) - legacy 2</small>
 
 * fix: added better documentation ([ce79c07](https://github.com/dragoscirjan/tempel-javascript/commit/ce79c07))
 * fix: added better documentation ([2f5c200](https://github.com/dragoscirjan/tempel-javascript/commit/2f5c200))
@@ -171,7 +171,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## <small>0.0.2 (2025-06-24)</small>
+## <small>0.0.2 (2025-06-24) - legacy 2</small>
 
 * chore: added npm run test ([0ad47f9](https://github.com/dragoscirjan/tempel-javascript/commit/0ad47f9))
 * chore: added prettier module ([442ddad](https://github.com/dragoscirjan/tempel-javascript/commit/442ddad))
@@ -293,7 +293,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## <small>0.0.2 (2025-06-24)</small>
+## <small>0.0.2 (2025-06-24) - legacy 3</small>
 
 * fix: crash if run docs or sonar-scanner crash ([b719c9a](https://github.com/dragoscirjan/tempel-javascript/commit/b719c9a))
 * fix: faster ci ([ef2024a](https://github.com/dragoscirjan/tempel-javascript/commit/ef2024a))

@@ -1,8 +1,8 @@
 ## Project
 
-- Name is Neottia
+- Name is Tempel
 - Goal is to provide a full SDLC understood by multiple AI harnesses
-- Harnesses covered by Neottia (an `extensions/<harness>` module exists for them):
+- Harnesses covered by Tempel (an `extensions/<harness>` module exists for them):
   - [x] OpenCode
   - [x] Pi
 - Harnesses planned for future support (not urgent):
@@ -34,7 +34,7 @@
 - Follow Google coding standards for coding -> <https://google.github.io/styleguide/tsguide.html>
 - Always comment your code -> if the comment tries to explain something too much, it could be that the specific code is too complex or wrong -> simplify it
 - All node packages will have
-  - `@neottia/` as organization / namespace
+  - `@tempel/` as organization / namespace
   - their own LICENSE -> if not mentioned otherwise you will use MIT (make sure you add the package to the main LICENSE file)
   - their own README documenting what the package does -> make sure you properly document the code
 

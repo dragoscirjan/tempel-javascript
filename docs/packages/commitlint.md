@@ -34,7 +34,7 @@ fix(#50): replace deprecated plugin
 The reusable factory leaves this option disabled by default. Enable it in another project with:
 
 ```js
-export default commitlintConfig({
+export default tempelCommitlintConfig({
   requireIssueId: true,
 });
 ```
