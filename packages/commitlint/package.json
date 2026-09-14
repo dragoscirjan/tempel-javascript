@@ -1,29 +1,29 @@
 {
-  "name": "@templ-project/commitlint",
+  "name": "@tempel/commitlint",
   "version": "1.0.0",
   "type": "module",
   "main": "index.cjs",
   "exports": {
-    ".": "./index.mjs",
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs"
+    },
     "./package.json": "./package.json"
   },
-  "files": [
-    "index.cjs",
-    "index.mjs",
-    "package.json"
-  ],
+  "files": ["index.cjs", "index.mjs", "package.json"],
   "scripts": {
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest"
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
-  "description": "Prettier configuration for Templ Project",
+  "description": "Commitlint configuration for Tempel",
   "dependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0"
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2"
   },
   "devDependencies": {
-    "@templ-project/vitest": "^0.3.0"
+    "@tempel/vitest": "workspace:*",
+    "vitest": "^5.0.0"
   }
 }

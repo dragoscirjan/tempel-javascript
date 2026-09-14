@@ -1,4 +1,4 @@
-import markdown from 'eslint-plugin-markdown';
+import markdown from '@eslint/markdown';
 
 /**
  * Create Markdown configuration
@@ -8,9 +8,9 @@ import markdown from 'eslint-plugin-markdown';
 export function createMarkdownConfig(options = {}) {
   const { rules: customRules = {}, plugins: customPlugins = {}, languageOptions: customLanguageOptions = {} } = options;
 
-  return markdown.configs.recommended.concat([
+  return markdown.configs.processor.concat([
     {
-      name: 'templ:markdown',
+      name: 'tempel:markdown',
       files: ['**/*.md/*.js'],
       plugins: {
         ...customPlugins,
@@ -29,10 +29,13 @@ export function createMarkdownConfig(options = {}) {
   ]);
 }
 
+/** Markdown content rules for projects that lint Markdown outside processor mode. */
+export const markdownRecommendedConfig = markdown.configs.recommended;
+
 /** @type {const('eslint').Linter.Config[]} */
-export default markdown.configs.recommended.concat([
+export default markdown.configs.processor.concat([
   {
-    name: 'templ:markdown/code-blocks/js',
+    name: 'tempel:markdown/code-blocks/js',
     files: ['**/*.md/*.js'],
     rules: {
       'no-console': 'off',
@@ -44,7 +47,7 @@ export default markdown.configs.recommended.concat([
     },
   },
   {
-    name: 'templ:markdown/code-blocks/ts',
+    name: 'tempel:markdown/code-blocks/ts',
     files: ['**/*.md/*.ts'],
     rules: {
       'no-console': 'off',
@@ -57,7 +60,7 @@ export default markdown.configs.recommended.concat([
     },
   },
   {
-    name: 'templ:markdown/code-blocks/json',
+    name: 'tempel:markdown/code-blocks/json',
     files: ['**/*.md/*.json'],
     rules: {
       'no-dupe-keys': 'off',

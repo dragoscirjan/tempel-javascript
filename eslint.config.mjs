@@ -1,11 +1,11 @@
 // eslint.config.mjs
-import templEslintConfig from './packages/eslint/index.js';
+import tempelEslintConfig from './packages/eslint/index.js';
 
 export default [
   {
     ignores: ['packages/*/dist/**', 'apps/*/build/**'],
   },
-  ...templEslintConfig,
+  ...tempelEslintConfig,
   {
     files: ['packages/shared/**'],
     rules: {

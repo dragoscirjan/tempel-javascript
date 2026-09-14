@@ -8,7 +8,7 @@ export function createTextConfig(options = {}) {
 
   return [
     {
-      name: 'templ:text',
+      name: 'tempel:text',
       files: ['**/*.txt'], // Apply only to .txt files
       plugins: {
         ...customPlugins,
@@ -45,7 +45,7 @@ export function createTextConfig(options = {}) {
       },
     },
     {
-      name: 'templ:all-other-text-files--eol-last',
+      name: 'tempel:all-other-text-files--eol-last',
       files: ['**/*.json', '**/*.jsonc', '**/*.md', '**/*.yml', '**/*.yaml'],
       rules: {
         'eol-last': ['error', 'always'],
@@ -57,7 +57,7 @@ export function createTextConfig(options = {}) {
 
 export default [
   {
-    name: 'templ:*.txt--eol-last',
+    name: 'tempel:*.txt--eol-last',
     files: ['**/*.txt'], // Apply only to .txt files
     languageOptions: {
       parser: {

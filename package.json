@@ -1,45 +1,58 @@
 {
-  "name": "@templ-project/javascript",
+  "name": "@tempel/javascript",
   "version": "0.3.0",
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "overrides": {
+      "typescript": "5.9.3",
+      "vite": ">=6.4.3",
+      "esbuild": ">=0.25.0"
+    }
+  },
   "description": "Comprehensive JavaScript and TypeScript development toolkit with portable configurations for ESLint, Prettier, TSConfig, Vitest, and Commitlint",
   "main": "dist/index.js",
   "private": true,
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
+    "build": "pnpm -r run --if-present build",
     "clear": "run-s clear:*",
     "clear:node-modules": "find . -name \"node_modules\" -maxdepth 1 -exec rm -rf {} \\;",
     "clear:lock-files": "rm -rf yarn.lock package-lock.json",
     "lint": "cross-env DEBUG=eslint:eslint npx eslint --fix .",
-    "prepare": "npx husky",
-    "test": "npm run test --workspaces --if-present"
+    "prepare": "pnpm exec husky",
+    "test": "pnpm -r --workspace-concurrency=1 run --if-present test",
+    "docs": "vitepress build docs",
+    "serve": "vitepress dev docs",
+    "docs:dev": "vitepress dev docs",
+    "docs:preview": "vitepress preview docs",
+    "changeset": "changeset",
+    "version:modules": "changeset version && pnpm install --lockfile-only",
+    "release:modules": "pnpm run build && changeset publish"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/templ-project/javascript-extensions.git"
+    "url": "https://github.com/dragoscirjan/tempel-javascript.git"
   },
   "author": "Dragos Cirjan <dragos.cirjan@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/templ-project/javascript-extensions/issues"
+    "url": "https://github.com/dragoscirjan/tempel-javascript/issues"
   },
-  "homepage": "https://github.com/templ-project/javascript-extensions#readme",
+  "homepage": "https://github.com/dragoscirjan/tempel-javascript#readme",
   "devDependencies": {
-    "@jscpd/badge-reporter": "^4.0.1",
-    "@types/node": "^24.7.2",
+    "@jscpd/badge-reporter": "^4.2.5",
+    "@types/node": "^26.5.1",
     "cross-env": "^10.1.0",
     "husky": "^9.1.7",
-    "jscpd": "^4.0.5"
+    "jscpd": "^5.2.0",
+    "lint-staged": "^16.2.4",
+    "vitepress": "^1.6.4",
+    "@changesets/cli": "^2.29.8"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "lint-staged": {
-    "*.{js,ts,json,yaml}": [
-      "npx eslint --fix"
-    ],
-    "packages/**/*.{js,ts}": [
-      "echo npx vitest related --run"
-    ]
+    "*.{js,ts,json,yaml}": ["npx eslint --fix"],
+    "packages/**/*.{js,ts}": ["echo npx vitest related --run"]
   },
   "importSort": {
     ".js, .jsx": {
@@ -52,6 +65,6 @@
     }
   },
   "dependencies": {
-    "npm-run-all2": "^8.0.4"
+    "npm-run-all2": "^9.0.3"
   }
 }

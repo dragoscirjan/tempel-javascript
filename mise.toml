@@ -1,0 +1,103 @@
+[settings]
+lockfile = true
+
+[tools]
+node = "22"
+pnpm = "10"
+python = "3.12"
+
+[tasks.build]
+description = "Build all packages"
+run = "pnpm run build"
+
+[tasks.clean]
+description = "Remove generated files without removing dependencies"
+run = "find packages -path '*/node_modules' -prune -o -type d -name dist -prune -exec rm -rf {} +; rm -rf docs/.vitepress/dist docs/.vitepress/cache"
+
+[tasks.test]
+description = "Run all package tests"
+run = "pnpm run test"
+
+[tasks.lint]
+description = "Lint and fix the repository"
+run = "pnpm run lint"
+
+[tasks."lint:check"]
+description = "Check linting without modifying files"
+run = "pnpm --filter ./packages/eslint exec -- eslint ../.."
+
+[tasks."lint-staged"]
+description = "Lint staged files"
+run = "pnpm exec lint-staged"
+
+[tasks."duplicate-check"]
+description = "Check packages for duplicated source code"
+run = "pnpm exec jscpd ./packages/**/src"
+
+[tasks.format]
+description = "Format repository files"
+run = "pnpm --filter ./packages/prettier exec -- prettier --write ../../README.md ../../package.json ../../packages/*/package.json ../../docs/*.md ../../docs/**/*.md ../../docs/.vitepress/config.ts"
+
+[tasks."format:check"]
+description = "Check formatting without modifying files"
+run = "pnpm --filter ./packages/prettier exec -- prettier --check ../../README.md ../../package.json ../../packages/*/package.json ../../docs/*.md ../../docs/**/*.md ../../docs/.vitepress/config.ts"
+
+[tasks.docs]
+description = "Build the VitePress documentation site"
+run = "pnpm run docs"
+
+[tasks.serve]
+description = "Serve the VitePress documentation locally"
+run = "pnpm run serve"
+
+[tasks."docs:serve"]
+description = "Serve the VitePress documentation locally"
+run = "pnpm run serve"
+
+[tasks."docs:dev"]
+description = "Serve the VitePress documentation locally"
+run = "pnpm run docs:dev"
+
+[tasks."docs:preview"]
+description = "Preview the built VitePress documentation"
+run = "pnpm run docs:preview"
+
+[tasks.audit]
+description = "Audit dependencies for known vulnerabilities"
+run = "pnpm audit --audit-level=moderate"
+
+[tasks.validate]
+description = "Run the local validation pipeline"
+run = [
+  "mise run clean",
+  "mise run build",
+  "mise run format:check",
+  "mise run lint:check",
+  "mise run test",
+  "mise run audit",
+  "mise run docs",
+]
+
+[tasks."deps:sync"]
+description = "Install mise tools and project dependencies"
+run = ["mise install --yes", "pnpm install"]
+
+[tasks."deps:clean"]
+description = "Remove installed dependencies"
+run = "rm -rf node_modules packages/*/node_modules"
+
+[tasks.changeset]
+description = "Create a Changeset for package changes"
+run = "pnpm changeset"
+
+[tasks."version:modules"]
+description = "Apply pending Changesets to package versions"
+run = "pnpm run version:modules"
+
+[tasks."release:modules"]
+description = "Build and publish versioned packages to npm"
+run = "pnpm run release:modules"
+
+[tasks."release:global"]
+description = "Reserved for coordinated global releases"
+run = "echo 'Use Changesets for independently versioned packages.'; exit 1"

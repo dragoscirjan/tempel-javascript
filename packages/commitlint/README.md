@@ -1,4 +1,4 @@
-# @templ-project/commitlint
+# @tempel/commitlint
 
 A zero-configuration commitlint setup that extends `@commitlint/config-conventional` with a flexible configuration factory. This package provides an easy way to enforce [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) in your JavaScript and TypeScript projects.
 
@@ -12,7 +12,7 @@ A zero-configuration commitlint setup that extends `@commitlint/config-conventio
 ## Installation
 
 ```bash
-npm install --save-dev @templ-project/commitlint
+npm install --save-dev @tempel/commitlint
 ```
 
 ## Usage
@@ -20,8 +20,8 @@ npm install --save-dev @templ-project/commitlint
 ### Basic Usage
 
 ```javascript
-// commitlint.config.js
-import commitlintConfig from '@templ-project/commitlint';
+// commitlint.config.mjs
+import commitlintConfig from '@tempel/commitlint';
 
 export default commitlintConfig();
 ```
@@ -29,13 +29,12 @@ export default commitlintConfig();
 ### With Custom Options
 
 ```javascript
-// commitlint.config.js
-import commitlintConfig from '@templ-project/commitlint';
+// commitlint.config.mjs
+import commitlintConfig from '@tempel/commitlint';
 
 export default commitlintConfig({
   rules: {
-    'header-max-length': [2, 'always', 72],
-    'scope-empty': [2, 'never']
+    'header-max-length': [2, 'always', 72]
   },
   ignores: [
     (commit) => commit.includes('[skip ci]')
@@ -46,22 +45,23 @@ export default commitlintConfig({
 ### CommonJS
 
 ```javascript
-// commitlint.config.js
-const commitlintConfig = require('@templ-project/commitlint');
+// commitlint.config.cjs
+const commitlintConfig = require('@tempel/commitlint');
 
 module.exports = commitlintConfig();
 ```
 
 ## Configuration
 
-The configuration factory merges your options with the base `@commitlint/config-conventional` configuration:
+The configuration factory merges your options with the base `@commitlint/config-conventional` configuration. Pass `requireIssueId: true` to require a GitHub issue reference in the commit header:
 
 ```javascript
-export default (options = {}) => ({
-  extends: ['@commitlint/config-conventional'],
-  ...options,
+export default commitlintConfig({
+  requireIssueId: true,
 });
 ```
+
+This accepts headers such as `feat(#51): add Jest support` and rejects headers without a `#123` issue scope. The option defaults to `false` in the reusable factory.
 
 For detailed rule configuration and usage, see the [commitlint documentation](https://commitlint.js.org/).
 
@@ -71,7 +71,7 @@ Install with Husky for automatic commit message validation:
 
 ```bash
 npm install --save-dev husky
-echo 'npx commitlint --edit $1' > .husky/commit-msg
+mise exec -- pnpm --filter ./packages/commitlint exec -- commitlint --config "$PWD/commitlint.config.mjs" --edit "$1"
 chmod +x .husky/commit-msg
 ```
 
@@ -80,7 +80,7 @@ chmod +x .husky/commit-msg
 The package includes comprehensive tests validating configuration factory behavior:
 
 ```bash
-npm test
+mise run test
 ```
 
 ## Documentation

@@ -11,7 +11,7 @@ export function createTomlConfig(options = {}) {
   return [
     ...toml.configs['flat/recommended'],
     {
-      name: 'templ:toml',
+      name: 'tempel:toml',
       files: ['*.toml', '**/*.toml'],
       plugins: {
         ...customPlugins,
@@ -31,7 +31,7 @@ export function createTomlConfig(options = {}) {
 export default [
   ...toml.configs['flat/recommended'],
   {
-    name: 'templ:toml/overrides',
+    name: 'tempel:toml/overrides',
     files: ['*.toml', '**/*.toml'],
     rules: {
       'toml/indent': ['error', 2],

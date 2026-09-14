@@ -45,6 +45,9 @@ bower_components
 build/Release
 dist
 
+# VitePress cache
+**/.vitepress/cache
+
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -81,9 +84,6 @@ typings/
 
 # mocha
 .junit.xml
-
-# documentation
-docs
 
 # lock files
 package-lock.json

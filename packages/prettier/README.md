@@ -1,8 +1,8 @@
-# @templ-project/prettier
+# @tempel/prettier
 
 A comprehensive, opinionated Prettier configuration designed for JavaScript and TypeScript projects. This package provides a portable formatting configuration that ensures consistent code style across projects and can be used as-is or extended for custom needs.
 
-- [@templ-project/prettier](#templ-projectprettier)
+- [@tempel/prettier](#tempelprettier)
   - [Features](#features)
   - [Installation](#installation)
   - [Module Compatibility](#module-compatibility)
@@ -58,7 +58,7 @@ A comprehensive, opinionated Prettier configuration designed for JavaScript and 
 ## Installation
 
 ```bash
-npm install --save-dev @templ-project/prettier
+npm install --save-dev @tempel/prettier
 ```
 
 This package includes Prettier and all necessary plugins, so you don't need to install them separately.
@@ -73,7 +73,7 @@ For projects using ES modules:
 
 ```javascript
 // prettier.config.js
-import prettierConfig from "@templ-project/prettier";
+import prettierConfig from "@tempel/prettier";
 
 export default prettierConfig;
 ```
@@ -84,7 +84,7 @@ For CommonJS projects:
 
 ```javascript
 // prettier.config.js
-const prettierConfig = require("@templ-project/prettier");
+const prettierConfig = require("@tempel/prettier");
 
 module.exports = prettierConfig;
 ```
@@ -95,7 +95,7 @@ The simplest approach for any project:
 
 ```json
 {
-  "prettier": "@templ-project/prettier"
+  "prettier": "@tempel/prettier"
 }
 ```
 
@@ -109,7 +109,7 @@ Add to your `package.json`:
 
 ```json
 {
-  "prettier": "@templ-project/prettier"
+  "prettier": "@tempel/prettier"
 }
 ```
 
@@ -119,11 +119,11 @@ Create a `prettier.config.js` file:
 
 ```javascript
 // ESM
-import prettierConfig from "@templ-project/prettier";
+import prettierConfig from "@tempel/prettier";
 export default prettierConfig;
 
 // CommonJS
-module.exports = require("@templ-project/prettier");
+module.exports = require("@tempel/prettier");
 ```
 
 ### Extending the Configuration
@@ -132,7 +132,7 @@ You can extend the base configuration with your own overrides:
 
 ```javascript
 // prettier.config.js
-import baseConfig from "@templ-project/prettier";
+import baseConfig from "@tempel/prettier";
 
 export default {
   ...baseConfig,
@@ -295,13 +295,13 @@ Add to your VS Code settings:
 
 ### ESLint Integration
 
-This configuration is designed to work seamlessly with `@templ-project/eslint`:
+This configuration is designed to work seamlessly with `@tempel/eslint`:
 
 ```javascript
 // eslint.config.mjs
-import templEslintConfig from "@templ-project/eslint";
+import tempelEslintConfig from "@tempel/eslint";
 
-export default templEslintConfig; // Includes Prettier integration
+export default tempelEslintConfig; // Includes Prettier integration
 ```
 
 ### Git Hooks Integration
@@ -328,7 +328,7 @@ The package includes a comprehensive test suite that validates:
 Run tests:
 
 ```bash
-npm test
+mise run test
 ```
 
 Test files are organized as:
@@ -342,10 +342,10 @@ Test files are organized as:
 
 ```bash
 # Install the configuration
-npm install --save-dev @templ-project/prettier
+npm install --save-dev @tempel/prettier
 
 # Add to package.json
-echo '{"prettier": "@templ-project/prettier"}' > .prettierrc.json
+echo '{"prettier": "@tempel/prettier"}' > .prettierrc.json
 
 # Format your project
 npx prettier --write .
@@ -355,7 +355,7 @@ npx prettier --write .
 
 ```javascript
 // prettier.config.js - Gradual migration approach
-import baseConfig from "@templ-project/prettier";
+import baseConfig from "@tempel/prettier";
 
 export default {
   ...baseConfig,
@@ -369,7 +369,7 @@ export default {
 
 ```javascript
 // prettier.config.js - Root configuration
-import baseConfig from "@templ-project/prettier";
+import baseConfig from "@tempel/prettier";
 
 export default {
   ...baseConfig,
@@ -403,7 +403,7 @@ export default {
 
 **File not being formatted**: Check that the file extension is supported. Add custom overrides for additional file types.
 
-**Conflicts with ESLint**: Use `@templ-project/eslint` which includes Prettier integration, or configure `eslint-config-prettier` manually.
+**Conflicts with ESLint**: Use `@tempel/eslint` which includes Prettier integration, or configure `eslint-config-prettier` manually.
 
 **Performance issues**: Consider using `.prettierignore` to exclude large files or directories:
 
@@ -417,7 +417,7 @@ coverage/
 
 ## Contributing
 
-This package is part of the Templ Project ecosystem. See the main repository for contribution guidelines.
+This package is part of the Tempel ecosystem. See the main repository for contribution guidelines.
 
 ## Changelog
 

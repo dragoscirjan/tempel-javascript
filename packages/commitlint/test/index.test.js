@@ -1,9 +1,21 @@
+import { createRequire } from 'node:module';
 import { describe, expect, it } from 'vitest';
-import commitlintConfig from '../index.mjs';
+import commitlintConfig, { GITHUB_ISSUE_PARSER_OPTIONS } from '../index.mjs';
+
+const require = createRequire(import.meta.url);
 
 describe('commitlint configuration', () => {
   it('should export a function', () => {
     expect(typeof commitlintConfig).toBe('function');
+  });
+
+  it('should support CommonJS consumers', () => {
+    const commonJsConfig = require('@tempel/commitlint');
+
+    expect(typeof commonJsConfig).toBe('function');
+    expect(commonJsConfig()).toEqual({
+      extends: ['@commitlint/config-conventional'],
+    });
   });
 
   it('should return a valid configuration object with default settings', () => {
@@ -36,6 +48,15 @@ describe('commitlint configuration', () => {
         'type-enum': [2, 'always', ['feat', 'fix', 'docs', 'style', 'refactor', 'test', 'chore']],
       },
     });
+  });
+
+  it('should optionally require a GitHub issue ID in the header', () => {
+    const config = commitlintConfig({ requireIssueId: true });
+
+    expect(config.parserPreset).toEqual({ parserOpts: GITHUB_ISSUE_PARSER_OPTIONS });
+    expect(config.plugins).toHaveLength(1);
+    expect(config.rules?.['references-empty']).toEqual([2, 'never']);
+    expect(config.rules?.['scope-issue-id']).toEqual([2, 'always']);
   });
 
   it('should allow overriding extends property', () => {
@@ -112,5 +133,17 @@ describe('commitlint configuration', () => {
       'type-enum': [2, 'always', ['feat', 'fix', 'docs']],
       'subject-case': [2, 'never', ['upper-case', 'pascal-case']],
     });
+  });
+
+  it('should preserve required issue rules when custom rules are supplied', () => {
+    const config = commitlintConfig({
+      requireIssueId: true,
+      rules: {
+        'references-empty': [0, 'never'],
+      },
+    });
+
+    expect(config.rules?.['references-empty']).toEqual([2, 'never']);
+    expect(config.rules?.['scope-issue-id']).toEqual([2, 'always']);
   });
 });

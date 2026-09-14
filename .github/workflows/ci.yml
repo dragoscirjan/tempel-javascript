@@ -1,96 +1,75 @@
-name: "CI"
+name: CI
 
 on:
-  workflow_dispatch:
-    inputs:
-      skip-tests:
-        description: "Skip tests"
-        type: boolean
-        required: false
-        default: false
-      skip-version-bump:
-        description: "Skip version bump"
-        type: boolean
-        required: false
-        default: false
-      force-publish:
-        description: "Force publish (even without version bump)"
-        type: boolean
-        required: false
-        default: false
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
 
 jobs:
-  ci:
-    name: "CI"
-    outputs:
-      version: ${{ steps.new_releases.outputs.version }}
+  quality:
+    name: Quality
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22.x
+          node-version: 22
+          cache: pnpm
 
-      - name: Install Dependencies
-        run: |
-          npm install
-          npm run build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Run Tests
-        if: ${{ inputs.skip-tests != true }}
-        run: |
-          npm run test
+      - name: Install Mise
+        uses: jdx/mise-action@v2
 
-      - name: Workspaces List
-        id: workspaces
-        run: |
-          workspaces=(
-            ".:node"
-            "packages/eslint:node"
-            "packages/prettier:node"
-            "packages/tsconfig:node"
-            "packages/vitest:node"
-          )
-          workspaces_string=$(IFS=','; echo "${workspaces[*]}")
-          echo "workspaces=$workspaces_string"
-          echo "workspaces=$workspaces_string" >> $GITHUB_OUTPUT
+      - name: Validate repository
+        run: mise run validate
 
-      - name: Version Update
-        if: ${{ inputs.skip-version-bump != true }}
-        id: releases
-        uses: dragoscops/bumpalicious@v3
+  release:
+    name: Release packages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: quality
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
         with:
-          github_token: ${{ secrets.GH_TOKEN }}
-          workspaces: ${{ steps.workspaces.outputs.workspaces }}
-          pr: true
-          pr_auto_merge: true
+          fetch-depth: 0
 
-      - name: Install Task
-        uses: go-task/setup-task@v1
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
-      - name: Publish Packages
-        if: ${{ ( steps.releases.outputs.tag != '' && inputs.skip-version-bump != true ) || inputs.force-publish == true }}
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create release PR or publish packages
+        uses: changesets/action@v1
+        with:
+          version: pnpm run version:modules
+          publish: pnpm run release:modules
+          title: 'chore: release packages'
+          commit: 'chore(#50): release packages'
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN_W }}
-        run: |
-          task publish
-
-      # - name: Create Release
-      #   if: ${{ steps.releases.outputs.tag != '' }}
-      #   run: |
-      #     find ./packages -type d -maxdepth 1 . | while read dir; do
-      #       if [ -d "$dir" ]; then
-      #         cd "$dir"
-      #         npm run release
-      #         cd -
-      #       fi
-      #     done
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_W }}

@@ -21,7 +21,7 @@ export function createJsonConfig(options = {}) {
       },
     },
     {
-      name: 'templ:json/ignores',
+      name: 'tempel:json/ignores',
       ignores: [
         'package-lock.json',
         '**/package-lock.json',
@@ -33,7 +33,7 @@ export function createJsonConfig(options = {}) {
       ],
     },
     {
-      name: 'templ:json',
+      name: 'tempel:json',
       files: ['*.json', '**/*.json'],
       language: 'json/json',
       rules: {
@@ -42,7 +42,7 @@ export function createJsonConfig(options = {}) {
       },
     },
     {
-      name: 'templ:jsonc/overrides',
+      name: 'tempel:jsonc/overrides',
       files: [
         '*.jsonc',
         '**/*.jsonc',
@@ -55,7 +55,7 @@ export function createJsonConfig(options = {}) {
       },
     },
     {
-      name: 'templ:json5/overrides',
+      name: 'tempel:json5/overrides',
       files: ['*.json5', '**/*.json5'],
       language: 'json/json5',
       rules: {
@@ -76,7 +76,7 @@ export default [
     },
   },
   {
-    name: 'templ:json/ignores',
+    name: 'tempel:json/ignores',
     ignores: [
       'package-lock.json',
       '**/package-lock.json',
@@ -88,7 +88,7 @@ export default [
     ],
   },
   {
-    name: 'templ:json/overrides',
+    name: 'tempel:json/overrides',
     files: ['*.json', '**/*.json'],
     language: 'json/json',
     rules: {
@@ -96,7 +96,7 @@ export default [
     },
   },
   {
-    name: 'templ:jsonc/overrides',
+    name: 'tempel:jsonc/overrides',
     files: [
       '*.jsonc',
       '**/*.jsonc',
@@ -108,7 +108,7 @@ export default [
     },
   },
   {
-    name: 'templ:json5/overrides',
+    name: 'tempel:json5/overrides',
     files: ['*.json5', '**/*.json5'],
     language: 'json/json5',
     rules: {

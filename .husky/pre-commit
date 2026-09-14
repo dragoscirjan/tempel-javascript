@@ -1,8 +1,5 @@
 
-npx lint-staged
+mise run lint:check
+mise run duplicate-check
+mise run build
 
-npx jscpd ./packages/**/src
-
-npm run build
-
-git add .

@@ -1,8 +1,8 @@
-# @templ-project/tsconfig
+# @tempel/tsconfig
 
 A comprehensive collection of TypeScript configurations designed for different runtime environments and build targets. This package provides portable, opinionated TSConfig presets that can be used as-is or extended for custom project needs.
 
-- [@templ-project/tsconfig](#templ-projecttsconfig)
+- [@tempel/tsconfig](#tempeltsconfig)
   - [Features](#features)
   - [Installation](#installation)
   - [Available Configurations](#available-configurations)
@@ -57,7 +57,7 @@ A comprehensive collection of TypeScript configurations designed for different r
 ## Installation
 
 ```bash
-npm install --save-dev @templ-project/tsconfig
+npm install --save-dev @tempel/tsconfig
 ```
 
 This package includes TypeScript as a dependency, so you don't need to install it separately.
@@ -127,7 +127,7 @@ Choose the appropriate configuration for your project and extend it:
 
 ```json
 {
-  "extends": "@templ-project/tsconfig/browser.json",
+  "extends": "@tempel/tsconfig/browser.json",
   "compilerOptions": {
     "outDir": "./build"
   },
@@ -141,7 +141,7 @@ You can extend any configuration with project-specific settings:
 
 ```json
 {
-  "extends": "@templ-project/tsconfig/base.json",
+  "extends": "@tempel/tsconfig/base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -167,7 +167,7 @@ The configurations use template variables that you can customize:
 
 ```json
 {
-  "extends": "@templ-project/tsconfig/esm.json",
+  "extends": "@tempel/tsconfig/esm.json",
   "compilerOptions": {
     "rootDir": "./source",
     "outDir": "./output",
@@ -226,11 +226,11 @@ const tsconfig = {
 
 ```bash
 # Regenerate all configuration files
-npm run build
+mise run build
 
 # Run tests with fresh configurations
-npm run pretest
-npm test
+mise run build
+mise run test
 ```
 
 ## Testing
@@ -258,7 +258,7 @@ expect(output).toContain('exports.hello = hello'); // CJS output
 
 ```json
 {
-  "extends": "@templ-project/tsconfig/cjs.json",
+  "extends": "@tempel/tsconfig/cjs.json",
   "compilerOptions": {
     "outDir": "./dist",
     "declaration": false
@@ -272,7 +272,7 @@ expect(output).toContain('exports.hello = hello'); // CJS output
 
 ```json
 {
-  "extends": "@templ-project/tsconfig/browser.json",
+  "extends": "@tempel/tsconfig/browser.json",
   "compilerOptions": {
     "outDir": "./lib",
     "declaration": true,
@@ -289,7 +289,7 @@ Create separate configurations for each output:
 ```jsonc
 // tsconfig.esm.json
 {
-  "extends": "@templ-project/tsconfig/esm.json",
+  "extends": "@tempel/tsconfig/esm.json",
   "compilerOptions": {
     "outDir": "./dist/esm"
   }
@@ -299,7 +299,7 @@ Create separate configurations for each output:
 ```jsonc
 // tsconfig.cjs.json
 {
-  "extends": "@templ-project/tsconfig/cjs.json",
+  "extends": "@tempel/tsconfig/cjs.json",
   "compilerOptions": {
     "outDir": "./dist/cjs"
   }
@@ -311,7 +311,7 @@ Create separate configurations for each output:
 ```jsonc
 // tsconfig.test.json
 {
-  "extends": "@templ-project/tsconfig/vitest.json",
+  "extends": "@tempel/tsconfig/vitest.json",
   "compilerOptions": {
     "noEmit": true
   },
@@ -329,7 +329,7 @@ Create separate configurations for each output:
 ```jsonc
 // packages/shared/tsconfig.json
 {
-  "extends": "@templ-project/tsconfig/base.json",
+  "extends": "@tempel/tsconfig/base.json",
   "compilerOptions": {
     "composite": true,
     "declaration": true,
@@ -342,7 +342,7 @@ Create separate configurations for each output:
 ```jsonc
 // packages/app/tsconfig.json
 {
-  "extends": "@templ-project/tsconfig/esm.json",
+  "extends": "@tempel/tsconfig/esm.json",
   "references": [
     { "path": "../shared" }
   ],
@@ -413,7 +413,7 @@ For production builds, consider these overrides:
 
 ```jsonc
 {
-  "extends": "@templ-project/tsconfig/base.json",
+  "extends": "@tempel/tsconfig/base.json",
   "compilerOptions": {
     "sourceMap": false,      // Disable in production
     "removeComments": true,  // Already enabled
@@ -429,7 +429,7 @@ For production builds, consider these overrides:
 
 **Configuration not found**: Ensure the package is installed and the path is correct:
 ```bash
-npm list @templ-project/tsconfig
+npm list @tempel/tsconfig
 ```
 
 **Module resolution errors**: Check that you're using the right configuration for your environment:
@@ -455,7 +455,7 @@ If you encounter module resolution issues:
 
 ## Contributing
 
-This package is part of the Templ Project ecosystem. See the main repository for contribution guidelines.
+This package is part of the Tempel ecosystem. See the main repository for contribution guidelines.
 
 ## Changelog
 

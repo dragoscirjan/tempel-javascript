@@ -1,0 +1,1 @@
+mise exec -- pnpm --filter ./packages/commitlint exec -- commitlint --config "$PWD/commitlint.config.mjs" --edit "$1"
