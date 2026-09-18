@@ -73,3 +73,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_W }}
+          # The release job only runs after the quality job passes and the
+          # commit content is machine-generated; skip husky hooks (they
+          # require mise, which is not installed in this job).
+          HUSKY: 0
