@@ -8,11 +8,7 @@
     "./types": "./types.d.ts",
     "./package.json": "./package.json"
   },
-  "files": [
-    "index.js",
-    "rules/",
-    "package.json"
-  ],
+  "files": ["index.js", "rules/", "package.json"],
   "scripts": {
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest"

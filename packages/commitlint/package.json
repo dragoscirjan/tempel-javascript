@@ -10,11 +10,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "index.cjs",
-    "index.mjs",
-    "package.json"
-  ],
+  "files": ["index.cjs", "index.mjs", "package.json"],
   "scripts": {
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest"

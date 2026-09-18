@@ -66,7 +66,10 @@ jobs:
       - name: Create release PR or publish packages
         uses: changesets/action@v1
         with:
-          version: pnpm run version:modules
+          # changesets writes package.json files with raw JSON.stringify,
+          # which does not match the repository prettier style; reformat
+          # before committing so `format:check` keeps passing.
+          version: pnpm run version:modules && pnpm run format:packages
           publish: pnpm run release:modules
           title: 'chore: release packages'
           commit: 'chore(#50): release packages'

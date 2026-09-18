@@ -7,10 +7,7 @@
     ".": "./dist/index.js",
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist/",
-    "package.json"
-  ],
+  "files": ["dist/", "package.json"],
   "scripts": {
     "build": "pnpm exec tsc -p .",
     "prebuild": "rimraf ./dist",
