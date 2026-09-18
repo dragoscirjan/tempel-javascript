@@ -1,0 +1,48 @@
+name: Test validate action
+
+on:
+  pull_request: {}
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-validate-action-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint action sources
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Check shell syntax
+        shell: bash
+        run: bash -n .github/actions/validate/validate.sh .github/actions/validate/validate.spec.sh
+
+      - name: Run ShellCheck
+        shell: bash
+        run: shellcheck .github/actions/validate/validate.sh .github/actions/validate/validate.spec.sh
+
+  shell-tests:
+    name: Shell tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Run validate action tests
+        shell: bash
+        run: ./.github/actions/validate/validate.spec.sh

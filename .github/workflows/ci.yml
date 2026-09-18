@@ -33,8 +33,25 @@ jobs:
       - name: Install Mise
         uses: jdx/mise-action@v2
 
+      - name: Clean build artifacts
+        run: mise run clean
+
+      - name: Build packages
+        run: mise run build
+
       - name: Validate repository
-        run: mise run validate
+        uses: ./.github/actions/validate
+        with:
+          executor: pnpm
+          use-mise: true
+          script-format: format:check
+          script-lint: lint:check
+          script-duplicate-check: duplicate-check
+          script-test: test
+          script-audit: audit
+
+      - name: Build documentation
+        run: mise run docs
 
   release:
     name: Release packages

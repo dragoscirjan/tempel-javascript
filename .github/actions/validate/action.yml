@@ -1,0 +1,92 @@
+name: Validate
+description: Run configurable project validation scripts with a selected task executor.
+author: dragoscops
+
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  executor:
+    description: Task executor. Supported values are npm, pnpm, yarn, node, bun, deno, and nub.
+    required: false
+    default: npm
+  use-mise:
+    description: Run the selected executor through mise exec.
+    required: false
+    default: 'false'
+  path:
+    description: Directory that contains the package scripts to run.
+    required: false
+    default: '.'
+  run-format:
+    description: Run the format script.
+    required: false
+    default: 'true'
+  script-format:
+    description: Name of the format script.
+    required: false
+    default: format
+  run-lint:
+    description: Run the lint script.
+    required: false
+    default: 'true'
+  script-lint:
+    description: Name of the lint script.
+    required: false
+    default: lint
+  run-duplicate-check:
+    description: Run the duplicate-check script.
+    required: false
+    default: 'true'
+  script-duplicate-check:
+    description: Name of the duplicate-check script.
+    required: false
+    default: duplicate-check
+  ignore-duplicate-check-result:
+    description: Report duplicate-check failures as warnings instead of failing the action.
+    required: false
+    default: 'false'
+  run-test:
+    description: Run the test script.
+    required: false
+    default: 'true'
+  script-test:
+    description: Name of the test script.
+    required: false
+    default: test
+  run-audit:
+    description: Run the audit script.
+    required: false
+    default: 'true'
+  script-audit:
+    description: Name of the audit script.
+    required: false
+    default: audit
+  audit-level:
+    description: Minimum audit severity. Use info, low, moderate, high, or critical.
+    required: false
+    default: moderate
+
+runs:
+  using: composite
+  steps:
+    - name: Run validation scripts
+      shell: bash
+      env:
+        VALIDATE_EXECUTOR: ${{ inputs.executor }}
+        VALIDATE_USE_MISE: ${{ inputs.use-mise }}
+        VALIDATE_PATH: ${{ inputs.path }}
+        VALIDATE_RUN_FORMAT: ${{ inputs.run-format }}
+        VALIDATE_SCRIPT_FORMAT: ${{ inputs.script-format }}
+        VALIDATE_RUN_LINT: ${{ inputs.run-lint }}
+        VALIDATE_SCRIPT_LINT: ${{ inputs.script-lint }}
+        VALIDATE_RUN_DUPLICATE_CHECK: ${{ inputs.run-duplicate-check }}
+        VALIDATE_SCRIPT_DUPLICATE_CHECK: ${{ inputs.script-duplicate-check }}
+        VALIDATE_IGNORE_DUPLICATE_CHECK_RESULT: ${{ inputs.ignore-duplicate-check-result }}
+        VALIDATE_RUN_TEST: ${{ inputs.run-test }}
+        VALIDATE_SCRIPT_TEST: ${{ inputs.script-test }}
+        VALIDATE_RUN_AUDIT: ${{ inputs.run-audit }}
+        VALIDATE_SCRIPT_AUDIT: ${{ inputs.script-audit }}
+        VALIDATE_AUDIT_LEVEL: ${{ inputs.audit-level }}
+      run: '${GITHUB_ACTION_PATH}/validate.sh'

@@ -1,0 +1,147 @@
+name: Test validate action integration
+
+on:
+  pull_request: {}
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-validate-action-integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    name: Exercise composite action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Create package-script fixture
+        shell: bash
+        env:
+          FIXTURE_PATH: ${{ runner.temp }}/validate-action-fixture
+        run: |
+          rm -rf "${FIXTURE_PATH}"
+          mkdir -p "${FIXTURE_PATH}"
+          cat >"${FIXTURE_PATH}/package.json" <<'JSON'
+          {
+            "private": true,
+            "scripts": {
+              "format": "node check.cjs format",
+              "lint": "node check.cjs lint",
+              "duplicate-check": "node check.cjs duplicate-check",
+              "test": "node check.cjs test",
+              "audit": "node check.cjs audit"
+            }
+          }
+          JSON
+          cat >"${FIXTURE_PATH}/check.cjs" <<'JS'
+          const fs = require('node:fs');
+
+          const check = process.argv[2];
+          const logPath = process.env.VALIDATE_LOG;
+
+          if (!check || !logPath) {
+            process.exit(2);
+          }
+
+          fs.appendFileSync(logPath, `${check}\n`);
+
+          if (
+            check === 'audit' &&
+            !process.argv.includes('--audit-level=moderate')
+          ) {
+            process.exit(8);
+          }
+
+          if (process.env.FAIL_CHECK === check) {
+            process.exit(9);
+          }
+          JS
+
+      - name: Run successful npm validation
+        env:
+          VALIDATE_LOG: ${{ runner.temp }}/validate-npm.log
+        uses: ./.github/actions/validate
+        with:
+          executor: npm
+          path: ${{ runner.temp }}/validate-action-fixture
+
+      - name: Verify successful npm validation
+        shell: bash
+        env:
+          VALIDATE_LOG: ${{ runner.temp }}/validate-npm.log
+        run: |
+          diff -u \
+            <(printf '%s\n' format lint duplicate-check test audit) \
+            "${VALIDATE_LOG}"
+
+      - name: Run successful Node.js validation
+        env:
+          VALIDATE_LOG: ${{ runner.temp }}/validate-node.log
+        uses: ./.github/actions/validate
+        with:
+          executor: node
+          path: ${{ runner.temp }}/validate-action-fixture
+
+      - name: Verify successful Node.js validation
+        shell: bash
+        env:
+          VALIDATE_LOG: ${{ runner.temp }}/validate-node.log
+        run: |
+          diff -u \
+            <(printf '%s\n' format lint duplicate-check test audit) \
+            "${VALIDATE_LOG}"
+
+      - name: Run expected fail-fast validation
+        id: fail_fast
+        continue-on-error: true
+        env:
+          FAIL_CHECK: lint
+          VALIDATE_LOG: ${{ runner.temp }}/validate-fail-fast.log
+        uses: ./.github/actions/validate
+        with:
+          executor: npm
+          path: ${{ runner.temp }}/validate-action-fixture
+
+      - name: Verify fail-fast validation
+        if: always()
+        shell: bash
+        env:
+          STEP_OUTCOME: ${{ steps.fail_fast.outcome }}
+          VALIDATE_LOG: ${{ runner.temp }}/validate-fail-fast.log
+        run: |
+          test "${STEP_OUTCOME}" = failure
+          diff -u \
+            <(printf '%s\n' format lint) \
+            "${VALIDATE_LOG}"
+
+      - name: Run ignored duplicate-check failure
+        env:
+          FAIL_CHECK: duplicate-check
+          VALIDATE_LOG: ${{ runner.temp }}/validate-duplicate-warning.log
+        uses: ./.github/actions/validate
+        with:
+          executor: npm
+          path: ${{ runner.temp }}/validate-action-fixture
+          ignore-duplicate-check-result: true
+
+      - name: Verify ignored duplicate-check failure
+        shell: bash
+        env:
+          VALIDATE_LOG: ${{ runner.temp }}/validate-duplicate-warning.log
+        run: |
+          diff -u \
+            <(printf '%s\n' format lint duplicate-check test audit) \
+            "${VALIDATE_LOG}"
