@@ -10,11 +10,23 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Getting started', link: '/getting-started' },
+      { text: 'CI', link: '/ci' },
       { text: 'Packages', link: '/packages/' },
       { text: 'Releases', link: '/releases' },
       { text: 'Roadmap', link: '/roadmap' },
     ],
     sidebar: {
+      '/': [
+        {
+          text: 'Project',
+          items: [
+            { text: 'Getting started', link: '/getting-started' },
+            { text: 'CI', link: '/ci' },
+            { text: 'Releases', link: '/releases' },
+            { text: 'Roadmap', link: '/roadmap' },
+          ],
+        },
+      ],
       '/packages/': [
         {
           text: 'Packages',

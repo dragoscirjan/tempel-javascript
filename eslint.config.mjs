@@ -3,7 +3,7 @@ import tempelEslintConfig from './packages/eslint/index.js';
 
 export default [
   {
-    ignores: ['packages/*/dist/**', 'apps/*/build/**'],
+    ignores: ['packages/*/dist/**', 'apps/*/build/**', 'docs/.vitepress/**'],
   },
   ...tempelEslintConfig,
   {
