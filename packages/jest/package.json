@@ -1,13 +1,16 @@
 {
   "name": "@tempel/jest",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "main": "dist/index.js",
   "exports": {
     ".": "./dist/index.js",
     "./package.json": "./package.json"
   },
-  "files": ["dist/", "package.json"],
+  "files": [
+    "dist/",
+    "package.json"
+  ],
   "scripts": {
     "build": "pnpm exec tsc -p .",
     "prebuild": "rimraf ./dist",
