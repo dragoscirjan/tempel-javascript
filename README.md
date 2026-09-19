@@ -26,16 +26,16 @@ The user documentation is maintained as a VitePress site in [`docs/`](docs/).
 - Run `mise run docs:dev` to serve the site locally.
 - Run `mise run docs` to build it.
 
-## Development
+## Contributing
 
-This repository uses mise and pnpm:
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for the branch, worktree, coding, testing, commit, and pull request workflow. The short setup is:
 
 ```bash
 mise run deps:sync
 mise run validate
 ```
 
-Use `mise run build`, `mise run test`, `mise run lint`, `mise run format`, and `mise run docs:preview` for individual tasks. Run `mise run changeset` when a package change needs a release note. See the [release guide](docs/releases.md) for the full process.
+Package releases use Changesets. See the [release guide](docs/releases.md) for the maintainer workflow.
 
 ## License
 
