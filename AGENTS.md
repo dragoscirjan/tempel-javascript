@@ -1,75 +1,37 @@
-## Project
+# AGENTS.md
 
-- Name is Tempel
-- Goal is to provide a full SDLC understood by multiple AI harnesses
-- Harnesses covered by Tempel (an `extensions/<harness>` module exists for them):
-  - [x] OpenCode
-  - [x] Pi
-- Harnesses planned for future support (not urgent):
-  - [ ] ClaudeCode
-  - [ ] Codex
-  - [ ] Copilot
-  - [ ] Kiro
+This file contains instructions for LLM agents working in this repository. The development workflow, coding standards, tests, commits, and release process are documented in [CONTRIBUTING.md](CONTRIBUTING.md) and apply to both agents and human contributors.
 
-## Task Management
+## Repository identity
 
-- GitHub is the default Git hosting for this project
-- When asked to create an issue or read an issue, you will refer to the Issues section of the Repository and use `gh` or the GitHub MCP
-- When asked to create a design document or read one, you will refer to the Wiki section of the Repository and use `gh` or GitHub MCP
+Tempel is a monorepo of shared JavaScript and TypeScript development configuration. It publishes six `@tempel/*` packages:
 
-## Toolchain
+- `packages/eslint`
+- `packages/prettier`
+- `packages/tsconfig`
+- `packages/vitest`
+- `packages/jest`
+- `packages/commitlint`
 
-- pnpm is the only package manager -> never use npm, yarn, or bun
-- mise is the only task interface -> prefer `mise run <task>` over raw pnpm commands; run `mise tasks` to list available tasks
+The repository also contains the reusable `.github/actions/validate` composite action and a VitePress site under `docs/`. There is no `extensions/` module system or global release package in this repository.
 
-## Versioning and Releases
+## Agent workflow
 
-- Module versions are managed only through Changesets (`mise run changeset`) -> never hand-edit `version` fields in `package.json`
-- Global releases are prepared only via `mise run release:global -- <semver>`
-- `packages/release/release-manifest.json` is generated -> never edit it manually
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing files.
+- Use GitHub Issues for task records and the GitHub Wiki for design documents. Use `gh` or the configured GitHub MCP when the user asks to read or change either one.
+- Keep feature work off the main checkout. Create a branch and a sibling worktree under `../tempel-javascript--workspaces/`. Replace `/` in the branch name with `--` in the worktree directory name. For example, branch `docs/contributing` uses `../tempel-javascript--workspaces/docs--contributing`.
+- For implementation requests, commit the finished change, push the branch, and open a pull request unless the user limits the task to local work.
+- Never merge a pull request, publish a package, create a release, or deploy documentation without explicit user approval.
+- Do not discard changes that were already present when the task started.
 
-## Code
+## Code inspection
 
-- Project is written using TypeScript (compile it only for generic modules or modules where harnesses do not understand TypeScript) - don't bother compiling modules unless necessary
-- Follow Google coding standards for coding -> <https://google.github.io/styleguide/tsguide.html>
-- Always comment your code -> if the comment tries to explain something too much, it could be that the specific code is too complex or wrong -> simplify it
-- All node packages will have
-  - `@tempel/` as organization / namespace
-  - their own LICENSE -> if not mentioned otherwise you will use MIT (make sure you add the package to the main LICENSE file)
-  - their own README documenting what the package does -> make sure you properly document the code
+Use a code indexing tool for code inspection and evaluate whether its results are useful.
 
-- Whenever asked to develop a new feature
-  - Make sure you create a branch, commit everything and create a PR for it (NEVER merge PRs without prior consent)
-  - The branch is reflected as a git worktree under `../neottia--workspaces/<branch-name>` (worktree name matches the branch name) to enable parallel work
+1. Run `mise run clean` before indexing because `codeindex_cgc` does not respect `.gitignore`.
+2. Index the repository or active worktree with `codeindex_cgc` before relying on graph results.
+3. Keep the index updated while changing code.
+4. Scope every query with `repo_path`.
+5. Check source files directly when the index misses monorepo relationships. Use `codeindex_gitnexus` when commit-based impact analysis is more useful.
 
-## Code Inspection
-
-- When coding or inspecting code, a code indexing tool MUST be used and evaluated for the task at hand
-- The default code indexing tool is the `codeindex_cgc` MCP
-  - Index the repository (or branch worktree) with `add_code_to_graph` before relying on it -> use `watch_directory` while actively developing
-  - The indexer does NOT respect `.gitignore` -> run `mise run clean` before indexing so generated artifacts (`dist/`, `.jscpd/`, `docs/.vitepress/dist/`) do not pollute the graph
-  - Always scope queries with `repo_path` -> unscoped queries mix all indexed repositories
-- Code indexing MCPs are known to be weak with mono-repos -> if the available indexing tools are not useful for the task, do not hesitate to say so and suggest a better alternative (e.g. `codeindex_gitnexus` for commit-anchored impact analysis)
-
-## Commits
-
-- Follow Conventional Commits (e.g. `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`)
-
-## Testing
-
-- Colocate test files with the source they test
-- `.spec.ts` files are unit tests
-- `.test.ts` files are integration tests
-- Integration tests MUST use temporary folders ONLY -> the repository and workspace folders must remain immutable while testing
-- Run `mise run validate` before pushing
-
-## Documentation
-
-- Project has a docs folder using VitePress
-- Document the project every time you see fit - documentation needs to be as thorough as possible - user does not need to read the code to understand how to configure / use the tools
-- DO NOT document how to develop the code; document ONLY how users should use the Project
-
-## README.md
-
-- Documentation must be summarised under README.md
-- README.md can also contain a section on how to develop - I keep forgetting all the mise run commands for example and the project structure
+If `codeindex_cgc` cannot index a Git worktree, index the main repository at the same commit and verify every changed file directly in the worktree.
