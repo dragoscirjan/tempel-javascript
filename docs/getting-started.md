@@ -1,14 +1,12 @@
 # Getting started
 
-## Install the toolkit
+## Install the packages
 
-Install the packages you need as development dependencies:
+Install only the packages your project needs. This command installs the full set:
 
 ```bash
-pnpm add -D @tempel/eslint @tempel/prettier @tempel/tsconfig @tempel/vitest @tempel/jest @tempel/commitlint husky
+pnpm add -D @tempel/eslint @tempel/prettier @tempel/tsconfig @tempel/vitest @tempel/jest @tempel/commitlint @commitlint/cli husky
 ```
-
-Every package is independent; installing the complete set is optional.
 
 ## Configure ESLint
 
@@ -32,7 +30,7 @@ Add the shared configuration to `package.json`:
 }
 ```
 
-Or load it from `prettier.config.mjs`:
+You can also load it from `prettier.config.mjs`:
 
 ```js
 import tempelPrettierConfig from "@tempel/prettier";
@@ -42,7 +40,7 @@ export default tempelPrettierConfig;
 
 ## Configure TypeScript
 
-Extend the preset matching your runtime:
+Extend the preset for the project's runtime:
 
 ```json
 {
@@ -51,7 +49,7 @@ Extend the preset matching your runtime:
 }
 ```
 
-Available presets are `base.json`, `browser.json`, `cjs.json`, `esm.json`, and `vitest.json`.
+The package provides `base.json`, `browser.json`, `cjs.json`, `esm.json`, and `vitest.json`.
 
 ## Configure Vitest
 
@@ -63,7 +61,14 @@ import tempelVitestConfig from "@tempel/vitest";
 export default tempelVitestConfig();
 ```
 
-The defaults discover `*.spec.js`, `*.test.js`, `*.e2e.js` and their TypeScript equivalents.
+The default discovery patterns are:
+
+- `src/**/*.spec.js`
+- `src/**/*.spec.ts`
+- `test/**/*.test.js`
+- `test/**/*.test.ts`
+- `test/**/*.e2e.js`
+- `test/**/*.e2e.ts`
 
 ## Configure Jest
 
@@ -75,7 +80,7 @@ import defineConfig from "@tempel/jest";
 export default defineConfig();
 ```
 
-Jest uses the same `src`, `test`, and E2E naming conventions as the shared Vitest defaults.
+Jest uses the same six default locations as Vitest. The factory discovers TypeScript files but does not configure a TypeScript transformer. Add a Jest-compatible transform if the tests contain TypeScript syntax.
 
 ## Configure commit messages
 
@@ -87,18 +92,15 @@ import commitlintConfig from "@tempel/commitlint";
 export default commitlintConfig();
 ```
 
-Use Husky to run Commitlint from a `commit-msg` hook.
-
-## Common commands
-
-From this repository, Mise provides the standard workflow:
+Initialize Husky and add a `commit-msg` hook:
 
 ```bash
-mise run deps:sync   # install tools and dependencies
-mise run build       # build generated and compiled outputs
-mise run test        # run package tests
-mise run lint        # lint and fix
-mise run format      # format supported files
-mise run validate    # run the local validation pipeline
-mise run docs:dev    # serve this documentation locally
+pnpm exec husky init
+printf '%s\n' 'pnpm exec commitlint --edit "$1"' > .husky/commit-msg
 ```
+
+The hook now checks each commit message with the exported configuration.
+
+## Run validation in GitHub Actions
+
+Use the [validate action](/ci) to run the project's format, lint, duplicate-check, test, and audit scripts in CI. The action supports npm, pnpm, Yarn, Node.js, Bun, Deno, and Nub.

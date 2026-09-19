@@ -1,16 +1,16 @@
 # TSConfig
 
-`@tempel/tsconfig` contains shareable TypeScript compiler configurations for common runtimes.
+`@tempel/tsconfig` publishes five TypeScript configuration files.
 
 ## Presets
 
-| Preset         | Use it for                                         |
-| -------------- | -------------------------------------------------- |
-| `base.json`    | Strict shared foundation                           |
-| `browser.json` | Browser applications and libraries using a bundler |
-| `cjs.json`     | Node.js CommonJS projects                          |
-| `esm.json`     | Node.js ES module projects                         |
-| `vitest.json`  | Vitest tests and test utilities                    |
+| Preset         | Extends                          | Runtime settings                                         |
+| -------------- | -------------------------------- | -------------------------------------------------------- |
+| `base.json`    | `@tsconfig/node22/tsconfig.json` | Shared source, output, and strictness defaults           |
+| `browser.json` | `base.json`                      | ES2020 target and modules with bundler module resolution |
+| `cjs.json`     | `base.json`                      | Node16 modules and Node16 module resolution              |
+| `esm.json`     | `base.json`                      | ESNext modules with Node module resolution               |
+| `vitest.json`  | `cjs.json`                       | Node and `vitest/globals` types                          |
 
 ## Usage
 
@@ -24,6 +24,20 @@
 }
 ```
 
-The base configuration builds on `@tsconfig/node22`, enables source maps, removes comments from output, checks unused locals and parameters, and enforces consistent filename casing.
+## Base defaults
 
-The package generates its JSON presets from `build.js`. Project configurations should extend a preset rather than modify the package files.
+The base preset uses `${configDir}` so paths resolve from the consuming configuration:
+
+- `include` contains only `${configDir}/src/**/*.ts`.
+- `exclude` is empty.
+- `rootDir` is `${configDir}/src`.
+- `outDir` is `${configDir}/dist`.
+- `types` contains `node`.
+- Declaration output and declaration maps are disabled.
+- Source maps are enabled.
+- Comments are removed from emitted files.
+- Unused locals and parameters are errors.
+- Filename casing must be consistent.
+- `verbatimModuleSyntax` is disabled.
+
+The default `include` does not select JSX or TSX files. Override `include`, `rootDir`, `outDir`, or any compiler option in the consuming project when its layout differs.

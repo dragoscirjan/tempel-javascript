@@ -1,23 +1,18 @@
 # Tempel JavaScript Development Toolkit
 
-Tempel JavaScript is a set of portable, opinionated development configurations for JavaScript and TypeScript projects.
+Tempel publishes six configuration packages for JavaScript and TypeScript projects. Each package can be installed on its own.
 
-It gives teams one consistent baseline for linting, formatting, TypeScript compilation, testing, and commit messages—without copying configuration between repositories.
+## Packages
 
-## What it provides
+- [`@tempel/eslint`](/packages/eslint) provides an ESLint flat configuration for JavaScript, TypeScript, JSON, JSONC, JSON5, YAML, TOML, Markdown, and text files.
+- [`@tempel/prettier`](/packages/prettier) formats code, data files, Markdown, YAML, and TOML.
+- [`@tempel/tsconfig`](/packages/tsconfig) provides presets for browser projects, Node.js ESM, Node.js CommonJS, and Vitest.
+- [`@tempel/vitest`](/packages/vitest) creates Vitest configuration with shared discovery and coverage defaults.
+- [`@tempel/jest`](/packages/jest) creates Jest configuration with matching test locations and coverage exclusions.
+- [`@tempel/commitlint`](/packages/commitlint) builds on the Conventional Commits configuration and can require a GitHub issue ID in the commit scope.
 
-- **ESLint** for JavaScript, TypeScript, JSON, JSONC, JSON5, YAML, TOML, Markdown, and text.
-- **Prettier** with consistent style and import sorting.
-- **TSConfig presets** for browsers, Node.js ESM, Node.js CommonJS, and Vitest.
-- **Vitest configuration** with sensible test patterns and coverage defaults.
-- **Jest configuration** with matching test discovery defaults.
-- **Commitlint configuration** based on Conventional Commits.
+## Validation action
 
-## Design principles
+The repository also includes a [composite GitHub Action](/ci) that runs format, lint, duplicate-check, test, and audit scripts. Projects can choose the task executor, rename scripts, or skip checks they do not use.
 
-- **Portable:** consume each package from any project or monorepo.
-- **Opinionated:** useful defaults work immediately after installation.
-- **Composable:** extend presets and override only what your project needs.
-- **Consistent:** the packages are designed to work together.
-
-Start with the [getting started guide](/getting-started), then choose a package from the [package reference](/packages/).
+Start with the [getting started guide](/getting-started), then open the [package reference](/packages/) for complete options and defaults.

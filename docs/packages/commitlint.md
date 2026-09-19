@@ -1,6 +1,6 @@
 # Commitlint
 
-`@tempel/commitlint` provides a small configuration factory based on `@commitlint/config-conventional`.
+`@tempel/commitlint` exports a configuration factory based on `@commitlint/config-conventional`.
 
 ## Basic usage
 
@@ -10,7 +10,7 @@ import tempelCommitlintConfig from "@tempel/commitlint";
 export default tempelCommitlintConfig();
 ```
 
-The factory accepts Commitlint options and merges them over the Conventional Commits preset:
+The factory accepts Commitlint configuration and merges custom rules over the conventional preset:
 
 ```js
 export default tempelCommitlintConfig({
@@ -20,11 +20,20 @@ export default tempelCommitlintConfig({
 });
 ```
 
-The package supports ESM and CommonJS consumers. Pair it with a Husky `commit-msg` hook to validate every commit before it is created.
+The package supports ESM and CommonJS consumers through conditional exports.
+
+## Commit hook
+
+Install `@commitlint/cli` and Husky, then add a `commit-msg` hook:
+
+```bash
+pnpm exec husky init
+printf '%s\n' 'pnpm exec commitlint --edit "$1"' > .husky/commit-msg
+```
 
 ## GitHub issue IDs
 
-The root project enables `requireIssueId: true`, so commit headers must use the GitHub issue ID as the scope:
+The Tempel repository calls the factory with `requireIssueId: true`. A commit header must use a `#` followed by digits as its scope:
 
 ```text
 feat(#51): add Jest support
@@ -39,4 +48,4 @@ export default tempelCommitlintConfig({
 });
 ```
 
-The rule is intentionally strict for now. Supporting richer issue formats and making the policy configurable per repository is a future TODO.
+This option configures `#` as the issue prefix, requires a parsed reference, and adds a rule that accepts only scopes matching `^#\d+$`. These two required rules take precedence over custom values supplied for the same rule names.
