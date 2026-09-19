@@ -1,10 +1,10 @@
-# AGENTS.md
+# Notes for coding agents
 
-This file contains instructions for LLM agents working in this repository. The development workflow, coding standards, tests, commits, and release process are documented in [CONTRIBUTING.md](CONTRIBUTING.md) and apply to both agents and human contributors.
+Tempel publishes shared configuration for JavaScript and TypeScript projects. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, coding, testing, commits, and releases. The rules below apply only to LLM agents.
 
-## Repository identity
+## What is in this repository
 
-Tempel is a monorepo of shared JavaScript and TypeScript development configuration. It publishes six `@tempel/*` packages:
+Tempel publishes six packages under the `@tempel` scope:
 
 - `packages/eslint`
 - `packages/prettier`
@@ -13,25 +13,21 @@ Tempel is a monorepo of shared JavaScript and TypeScript development configurati
 - `packages/jest`
 - `packages/commitlint`
 
-The repository also contains the reusable `.github/actions/validate` composite action and a VitePress site under `docs/`. There is no `extensions/` module system or global release package in this repository.
+The repository also contains the `.github/actions/validate` composite action and the VitePress site in `docs/`. It does not have an `extensions/` system or a global release package.
 
-## Agent workflow
+## Working rules
 
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing files.
-- Use GitHub Issues for task records and the GitHub Wiki for design documents. Use `gh` or the configured GitHub MCP when the user asks to read or change either one.
-- Keep feature work off the main checkout. Create a branch and a sibling worktree under `../tempel-javascript--workspaces/`. Replace `/` in the branch name with `--` in the worktree directory name. For example, branch `docs/contributing` uses `../tempel-javascript--workspaces/docs--contributing`.
-- For implementation requests, commit the finished change, push the branch, and open a pull request unless the user limits the task to local work.
-- Never merge a pull request, publish a package, create a release, or deploy documentation without explicit user approval.
-- Do not discard changes that were already present when the task started.
+- Use GitHub Issues for task records and the GitHub Wiki for design documents. When the user asks about either one, use `gh` or the configured GitHub MCP instead of guessing from local files.
+- Do feature work on a branch and in a sibling worktree, not in the main checkout. Put worktrees under `../tempel-javascript--workspaces/`. Replace `/` in the branch name with `--` for the directory name. The branch `docs/contributing`, for example, belongs in `../tempel-javascript--workspaces/docs--contributing`.
+- Unless the user asks for local-only work, finish an implementation by committing it, pushing the branch, and opening a pull request.
+- Do not merge, publish packages, create releases, or deploy documentation without the user's explicit approval.
+- Preserve changes that were already in the checkout when the task began.
 
-## Code inspection
+## Inspecting code
 
-Use a code indexing tool for code inspection and evaluate whether its results are useful.
+Use a code index when a task requires code inspection. Run `mise run clean` before indexing because `codeindex_cgc` reads ignored build output. Index the repository or active worktree, keep the index current while editing, and set `repo_path` on every query.
 
-1. Run `mise run clean` before indexing because `codeindex_cgc` does not respect `.gitignore`.
-2. Index the repository or active worktree with `codeindex_cgc` before relying on graph results.
-3. Keep the index updated while changing code.
-4. Scope every query with `repo_path`.
-5. Check source files directly when the index misses monorepo relationships. Use `codeindex_gitnexus` when commit-based impact analysis is more useful.
+The index can miss relationships in this monorepo. Check the source before relying on a graph result. `codeindex_gitnexus` is usually a better fit for commit-based impact analysis.
 
-If `codeindex_cgc` cannot index a Git worktree, index the main repository at the same commit and verify every changed file directly in the worktree.
+Some `codeindex_cgc` versions cannot index Git worktrees. In that case, index the main checkout at the same commit and verify all changed files in the worktree itself.
