@@ -1,18 +1,18 @@
 # Continuous integration
 
-The repository ships its validation pipeline as a reusable composite GitHub Action. Both this repository and any other project can run the same format, lint, duplicate-check, test, and audit checks from a workflow.
+The repository includes a reusable composite GitHub Action for project validation. It runs format, lint, duplicate-check, test, and audit scripts with a selected task executor.
 
-## Pipeline
+## Repository workflows
 
-Two workflows guard every push and pull request on `main`:
+Three workflows run for pull requests and pushes to `main`:
 
-| Workflow                             | What it does                                                                                                       |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| **CI**                               | Runs the `Quality` job (build + validation) and the `Release packages` job (Changesets release PR or npm publish). |
-| **Test validate action**             | Lints the action sources with ShellCheck and runs its shell test suite on Ubuntu and macOS.                        |
-| **Test validate action integration** | Exercises the composite action end to end against a fixture project.                                               |
+| Workflow                         | What it does                                                                                                                                                                                |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CI                               | Builds the packages, runs the validate action, and builds the documentation. On a push to `main`, its release job opens or updates a Changesets pull request or publishes changed packages. |
+| Test validate action             | Checks the shell scripts with Bash and ShellCheck, then runs the shell test suite on Ubuntu and macOS.                                                                                      |
+| Test validate action integration | Runs the composite action against a temporary package-script fixture and checks success, fail-fast, Node.js, and duplicate-warning behavior.                                                |
 
-The `Quality` job runs through the action itself:
+The CI workflow configures the action like this:
 
 ```yaml
 - uses: ./.github/actions/validate
@@ -28,11 +28,17 @@ The `Quality` job runs through the action itself:
 
 ## The validate action
 
-`.github/actions/validate` runs a project's format, lint, duplicate-check, test, and audit scripts in order and writes a results table to the job summary. Each check can be disabled or mapped to a different script name. The action does not install the selected executor or the project dependencies — check out the repository and install dependencies first.
+`.github/actions/validate` runs checks in this order:
 
-### Usage
+1. Format
+2. Lint
+3. Duplicate check
+4. Test
+5. Audit
 
-From a workflow inside this repository:
+The action does not install the executor or project dependencies. Set them up before the validation step.
+
+### Usage in this repository
 
 ```yaml
 jobs:
@@ -53,37 +59,65 @@ jobs:
           script-lint: lint:check
 ```
 
-From another repository, reference the action by commit SHA or tag:
+### Usage from another repository
+
+Pin external use to a full commit SHA or a release tag. Replace `<commit-sha>` in this example:
 
 ```yaml
-- uses: dragoscirjan/tempel-javascript/.github/actions/validate@main
+- uses: dragoscirjan/tempel-javascript/.github/actions/validate@<commit-sha>
   with:
     executor: pnpm
 ```
 
 ### Inputs
 
-| Input                           | Default           | Description                                                                                  |
-| ------------------------------- | ----------------- | -------------------------------------------------------------------------------------------- |
-| `executor`                      | `npm`             | Task executor. Supported values are `npm`, `pnpm`, `yarn`, `node`, `bun`, `deno`, and `nub`. |
-| `use-mise`                      | `false`           | Run the selected executor through `mise exec`.                                               |
-| `path`                          | `.`               | Directory that contains the package scripts to run.                                          |
-| `run-format`                    | `true`            | Run the format script.                                                                       |
-| `script-format`                 | `format`          | Name of the format script.                                                                   |
-| `run-lint`                      | `true`            | Run the lint script.                                                                         |
-| `script-lint`                   | `lint`            | Name of the lint script.                                                                     |
-| `run-duplicate-check`           | `true`            | Run the duplicate-check script.                                                              |
-| `script-duplicate-check`        | `duplicate-check` | Name of the duplicate-check script.                                                          |
-| `ignore-duplicate-check-result` | `false`           | Report duplicate-check failures as warnings instead of failing the action.                   |
-| `run-test`                      | `true`            | Run the test script.                                                                         |
-| `script-test`                   | `test`            | Name of the test script.                                                                     |
-| `run-audit`                     | `true`            | Run the audit script.                                                                        |
-| `script-audit`                  | `audit`           | Name of the audit script.                                                                    |
-| `audit-level`                   | `moderate`        | Minimum audit severity. Use `info`, `low`, `moderate`, `high`, or `critical`.                |
+| Input                           | Default           | Description                                                                                                |
+| ------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------- |
+| `executor`                      | `npm`             | Task executor. Supported values are `npm`, `pnpm`, `yarn`, `node`, `bun`, `deno`, and `nub`.               |
+| `use-mise`                      | `false`           | Run the selected executor through `mise exec`.                                                             |
+| `path`                          | `.`               | Relative or absolute directory that contains the scripts. The action runs every check from this directory. |
+| `run-format`                    | `true`            | Run the format script.                                                                                     |
+| `script-format`                 | `format`          | Name of the format script.                                                                                 |
+| `run-lint`                      | `true`            | Run the lint script.                                                                                       |
+| `script-lint`                   | `lint`            | Name of the lint script.                                                                                   |
+| `run-duplicate-check`           | `true`            | Run the duplicate-check script.                                                                            |
+| `script-duplicate-check`        | `duplicate-check` | Name of the duplicate-check script.                                                                        |
+| `ignore-duplicate-check-result` | `false`           | Report a duplicate-check failure as a warning and continue.                                                |
+| `run-test`                      | `true`            | Run the test script.                                                                                       |
+| `script-test`                   | `test`            | Name of the test script.                                                                                   |
+| `run-audit`                     | `true`            | Run the audit script.                                                                                      |
+| `script-audit`                  | `audit`           | Name of the audit script.                                                                                  |
+| `audit-level`                   | `moderate`        | Minimum audit severity. Accepted values are `info`, `low`, `moderate`, `high`, and `critical`.             |
+
+### Command construction
+
+The action uses these command forms:
+
+| Executor                  | Command prefix            |
+| ------------------------- | ------------------------- |
+| npm, pnpm, Yarn, Bun, Nub | `<executor> run <script>` |
+| Node.js                   | `node --run <script>`     |
+| Deno                      | `deno task <script>`      |
+
+The Node.js executor requires Node.js 22 or newer because it uses `node --run`.
+
+The audit check receives `--audit-level=<level>`. npm, pnpm, Node.js, and Nub receive `--` before that argument. Yarn, Bun, and Deno receive the argument directly. The configured audit script must accept it.
+
+### Validation and failures
+
+The seven boolean inputs accept only `true` or `false`, without regard to letter case. The action rejects unsupported executors, unsupported audit levels, an empty or inaccessible `path`, and an empty script name for an enabled check.
+
+A required check failure stops validation and preserves the command's exit status. Later checks appear as `Not run`. A disabled check appears as `Skipped`. `ignore-duplicate-check-result: true` is the only setting that changes a failed check to `Warning` and continues with the remaining checks.
+
+Without mise mode, the action checks that the selected executor is on `PATH` before it runs a check. With `use-mise: true`, it checks for mise and lets `mise exec` resolve the executor.
+
+### Job summary
+
+When `GITHUB_STEP_SUMMARY` is available, the action appends a table with the result of every check and an overall result. The action declares no outputs; the job summary is its report. A summary-write error produces a workflow warning without replacing the validation result.
 
 ### Mise integration
 
-Set `use-mise` to `true` when mise manages the selected executor. The action then prefixes every command with `mise exec --`:
+Set `use-mise` to `true` when mise manages the selected executor. The action prefixes every command with `mise exec --`:
 
 ```yaml
 - uses: ./.github/actions/validate
@@ -94,6 +128,6 @@ Set `use-mise` to `true` when mise manages the selected executor. The action the
     script-lint: lint:check
 ```
 
-Install mise in the job with [`jdx/mise-action`](https://github.com/jdx/mise-action) before running the action.
+Install mise with [`jdx/mise-action`](https://github.com/jdx/mise-action) before the validation step.
 
-This repository keeps mise as the single source of truth for its tasks: `package.json` exposes thin scripts such as `format:check`, `lint:check`, `duplicate-check`, and `audit` that delegate to the matching `mise run <task>` commands, and the action invokes those scripts.
+This repository keeps its tasks in `mise.toml`. The thin `package.json` scripts for `format:check`, `lint:check`, `duplicate-check`, and `audit` delegate to the matching mise tasks so the action can call them through pnpm.

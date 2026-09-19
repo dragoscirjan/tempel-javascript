@@ -1,14 +1,12 @@
 # Jest
 
-`@tempel/jest` is a portable Jest configuration factory for teams that prefer Jest over Vitest.
+`@tempel/jest` exports a Jest configuration factory. Jest is a runtime dependency of the package.
 
 ## Installation
 
 ```bash
 pnpm add -D @tempel/jest
 ```
-
-The package includes Jest as a runtime dependency and can be used from an ESM Jest configuration.
 
 ## Basic usage
 
@@ -22,15 +20,22 @@ export default defineConfig();
 
 ## Defaults
 
-- Discovers `src/**/*.spec.js`, `src/**/*.spec.ts`
-- Discovers `test/**/*.test.js`, `test/**/*.test.ts`
-- Discovers `test/**/*.e2e.js`, `test/**/*.e2e.ts`
-- Enables verbose reporting
-- Ignores `node_modules`, `dist`, `coverage`, and `src/test` from coverage paths
+- `verbose` is `true`.
+- `testMatch` contains:
+  - `**/src/**/*.spec.[jt]s`
+  - `**/test/**/*.test.[jt]s`
+  - `**/test/**/*.e2e.[jt]s`
+- `coveragePathIgnorePatterns` contains:
+  - `/node_modules/`
+  - `/dist/`
+  - `/coverage/`
+  - `/src/test/`
+
+The patterns discover JavaScript and TypeScript files. The factory does not configure a TypeScript transformer. Add a Jest-compatible transform or another supported compilation step when tests contain TypeScript syntax.
 
 ## Customization
 
-The factory accepts standard Jest configuration options. Custom values override the defaults:
+Standard Jest options override the defaults:
 
 ```js
 import defineConfig from "@tempel/jest";
@@ -43,4 +48,14 @@ export default defineConfig({
 });
 ```
 
-Jest-specific transforms, test environments, reporters, projects, and coverage thresholds can be configured using the normal Jest options.
+Transforms, test environments, reporters, projects, and coverage thresholds pass through unchanged.
+
+## Exported defaults
+
+The package exports the default arrays for reuse:
+
+```js
+import defineConfig, { DEFAULT_COVERAGE_PATH_IGNORE_PATTERNS, DEFAULT_TEST_MATCH } from "@tempel/jest";
+```
+
+`DEFAULT_TEST_MATCH` is the factory's test pattern array. `DEFAULT_COVERAGE_PATH_IGNORE_PATTERNS` is its coverage exclusion array.

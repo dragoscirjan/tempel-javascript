@@ -1,16 +1,16 @@
 # Package reference
 
-The toolkit is published as six packages. Use them independently or install the full development baseline.
+Tempel publishes six packages. Install only the configuration a project needs or combine them.
 
-| Package                            | Purpose                                  |
-| ---------------------------------- | ---------------------------------------- |
-| [`@tempel/eslint`](eslint)         | Multi-language ESLint flat configuration |
-| [`@tempel/prettier`](prettier)     | Shared formatting and import sorting     |
-| [`@tempel/tsconfig`](tsconfig)     | Runtime-specific TypeScript presets      |
-| [`@tempel/vitest`](vitest)         | Vitest configuration factory             |
-| [`@tempel/jest`](jest)             | Jest configuration factory               |
-| [`@tempel/commitlint`](commitlint) | Conventional Commits configuration       |
+| Package                            | Purpose                                                          |
+| ---------------------------------- | ---------------------------------------------------------------- |
+| [`@tempel/eslint`](eslint)         | Multi-language ESLint flat configuration                         |
+| [`@tempel/prettier`](prettier)     | Shared formatting for code, data files, Markdown, YAML, and TOML |
+| [`@tempel/tsconfig`](tsconfig)     | Runtime-specific TypeScript presets                              |
+| [`@tempel/vitest`](vitest)         | Vitest configuration factory                                     |
+| [`@tempel/jest`](jest)             | Jest configuration factory                                       |
+| [`@tempel/commitlint`](commitlint) | Conventional Commits configuration factory                       |
 
-All packages are MIT licensed. Package-specific READMEs remain available in the repository for npm consumers; this site is the canonical user guide.
+All six packages use the MIT license. Their package READMEs provide npm registry summaries. This site documents the supported setup, options, and defaults.
 
-For the current TypeScript support constraint and future work, see the [roadmap](/roadmap).
+See the [roadmap](/roadmap) for the current TypeScript version constraint.
