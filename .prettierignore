@@ -16,3 +16,6 @@ packages/tsconfig/browser.json
 packages/tsconfig/cjs.json
 packages/tsconfig/esm.json
 packages/tsconfig/vitest.json
+
+# Test fixture restored by the TSConfig integration suite
+packages/tsconfig/test/success/tsconfig.json
