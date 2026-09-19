@@ -21,7 +21,7 @@ npm install --save-dev @tempel/commitlint
 
 ```javascript
 // commitlint.config.mjs
-import commitlintConfig from '@tempel/commitlint';
+import commitlintConfig from "@tempel/commitlint";
 
 export default commitlintConfig();
 ```
@@ -30,15 +30,13 @@ export default commitlintConfig();
 
 ```javascript
 // commitlint.config.mjs
-import commitlintConfig from '@tempel/commitlint';
+import commitlintConfig from "@tempel/commitlint";
 
 export default commitlintConfig({
   rules: {
-    'header-max-length': [2, 'always', 72]
+    "header-max-length": [2, "always", 72],
   },
-  ignores: [
-    (commit) => commit.includes('[skip ci]')
-  ]
+  ignores: [(commit) => commit.includes("[skip ci]")],
 });
 ```
 
@@ -46,7 +44,7 @@ export default commitlintConfig({
 
 ```javascript
 // commitlint.config.cjs
-const commitlintConfig = require('@tempel/commitlint');
+const commitlintConfig = require("@tempel/commitlint");
 
 module.exports = commitlintConfig();
 ```

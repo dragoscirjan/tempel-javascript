@@ -49,23 +49,23 @@ Set `use-mise` when mise manages the selected executor. The action then prefixes
 
 ## Inputs
 
-| Input | Default | Description |
-| --- | --- | --- |
-| `executor` | `npm` | Runs scripts with `npm`, `pnpm`, `yarn`, `node`, `bun`, `deno`, or `nub`. |
-| `use-mise` | `false` | Wraps every executor command with `mise exec --`. |
-| `path` | `.` | Directory that contains the package scripts. Accepts relative or absolute paths. |
-| `run-format` | `true` | Runs the format script. |
-| `script-format` | `format` | Format script name. |
-| `run-lint` | `true` | Runs the lint script. |
-| `script-lint` | `lint` | Lint script name. |
-| `run-duplicate-check` | `true` | Runs the duplicate-check script. |
-| `script-duplicate-check` | `duplicate-check` | Duplicate-check script name. |
-| `ignore-duplicate-check-result` | `false` | Emits a warning instead of failing when duplicate-check exits nonzero. |
-| `run-test` | `true` | Runs the test script. |
-| `script-test` | `test` | Test script name. |
-| `run-audit` | `true` | Runs the audit script. |
-| `script-audit` | `audit` | Audit script name. |
-| `audit-level` | `moderate` | Minimum severity: `info`, `low`, `moderate`, `high`, or `critical`. |
+| Input                           | Default           | Description                                                                      |
+| ------------------------------- | ----------------- | -------------------------------------------------------------------------------- |
+| `executor`                      | `npm`             | Runs scripts with `npm`, `pnpm`, `yarn`, `node`, `bun`, `deno`, or `nub`.        |
+| `use-mise`                      | `false`           | Wraps every executor command with `mise exec --`.                                |
+| `path`                          | `.`               | Directory that contains the package scripts. Accepts relative or absolute paths. |
+| `run-format`                    | `true`            | Runs the format script.                                                          |
+| `script-format`                 | `format`          | Format script name.                                                              |
+| `run-lint`                      | `true`            | Runs the lint script.                                                            |
+| `script-lint`                   | `lint`            | Lint script name.                                                                |
+| `run-duplicate-check`           | `true`            | Runs the duplicate-check script.                                                 |
+| `script-duplicate-check`        | `duplicate-check` | Duplicate-check script name.                                                     |
+| `ignore-duplicate-check-result` | `false`           | Emits a warning instead of failing when duplicate-check exits nonzero.           |
+| `run-test`                      | `true`            | Runs the test script.                                                            |
+| `script-test`                   | `test`            | Test script name.                                                                |
+| `run-audit`                     | `true`            | Runs the audit script.                                                           |
+| `script-audit`                  | `audit`           | Audit script name.                                                               |
+| `audit-level`                   | `moderate`        | Minimum severity: `info`, `low`, `moderate`, `high`, or `critical`.              |
 
 The action invokes npm, pnpm, Yarn, Bun, and Nub scripts as `<executor> run <script>`. Node.js uses `node --run <script>`. Deno uses `deno task <script>`. With `use-mise: true`, the complete command becomes `mise exec -- <executor command>`.
 
@@ -95,13 +95,13 @@ The audit check appends `--audit-level=<level>` to the configured audit script. 
 
 The action writes a table to the GitHub job summary. Passed, failed, skipped, warning, and not-run states appear separately. Validation stops at the first required failure, so checks after that failure appear as `Not run`.
 
-| Check | Result |
-| --- | --- |
-| Format | Passed |
-| Lint | Failed |
+| Check           | Result  |
+| --------------- | ------- |
+| Format          | Passed  |
+| Lint            | Failed  |
 | Duplicate check | Not run |
-| Test | Not run |
-| Audit | Not run |
+| Test            | Not run |
+| Audit           | Not run |
 
 **Overall: Failed**
 

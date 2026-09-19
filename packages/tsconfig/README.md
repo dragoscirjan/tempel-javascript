@@ -69,6 +69,7 @@ This package includes TypeScript as a dependency, so you don't need to install i
 The foundation configuration that all other configs extend from.
 
 **Features:**
+
 - Extends `@tsconfig/node22` for modern Node.js compatibility
 - Strict type checking with unused variable detection
 - Source maps enabled for debugging
@@ -82,6 +83,7 @@ The foundation configuration that all other configs extend from.
 Optimized for browser environments and frontend applications.
 
 **Key Settings:**
+
 - **Target:** ES2020 for modern browser support
 - **Module:** ES2020 for native browser modules
 - **Module Resolution:** Bundler-optimized for webpack/vite/rollup
@@ -93,6 +95,7 @@ Optimized for browser environments and frontend applications.
 Configured for traditional Node.js projects using CommonJS modules.
 
 **Key Settings:**
+
 - **Module:** Node16 for CommonJS output
 - **Module Resolution:** Node16 for Node.js module resolution
 
@@ -103,6 +106,7 @@ Configured for traditional Node.js projects using CommonJS modules.
 Configured for modern Node.js projects using ES modules.
 
 **Key Settings:**
+
 - **Module:** ESNext for cutting-edge module features
 - **Module Resolution:** Node for Node.js compatibility
 
@@ -113,6 +117,7 @@ Configured for modern Node.js projects using ES modules.
 Specialized configuration for testing with Vitest framework.
 
 **Key Settings:**
+
 - Extends CJS configuration for Node.js test environment
 - Includes Vitest global types (`vitest/globals`)
 - Node.js types for test utilities
@@ -150,14 +155,8 @@ You can extend any configuration with project-specific settings:
     },
     "lib": ["DOM", "ES2020"]
   },
-  "include": [
-    "src/**/*",
-    "types/**/*"
-  ],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
 }
 ```
 
@@ -184,24 +183,24 @@ The configurations use template variables that you can customize:
 
 All configurations inherit these foundational settings:
 
-| Setting | Value | Purpose |
-|---------|-------|---------|
-| `target` | From @tsconfig/node22 | Modern JavaScript output |
-| `sourceMap` | `true` | Enable debugging support |
-| `removeComments` | `true` | Smaller output files |
-| `forceConsistentCasingInFileNames` | `true` | Cross-platform compatibility |
-| `noUnusedLocals` | `true` | Catch unused variables |
-| `noUnusedParameters` | `true` | Catch unused parameters |
-| `verbatimModuleSyntax` | `false` | Allow mixed import/export styles |
+| Setting                            | Value                 | Purpose                          |
+| ---------------------------------- | --------------------- | -------------------------------- |
+| `target`                           | From @tsconfig/node22 | Modern JavaScript output         |
+| `sourceMap`                        | `true`                | Enable debugging support         |
+| `removeComments`                   | `true`                | Smaller output files             |
+| `forceConsistentCasingInFileNames` | `true`                | Cross-platform compatibility     |
+| `noUnusedLocals`                   | `true`                | Catch unused variables           |
+| `noUnusedParameters`               | `true`                | Catch unused parameters          |
+| `verbatimModuleSyntax`             | `false`               | Allow mixed import/export styles |
 
 ### Environment-Specific Settings
 
-| Configuration | Module System | Target Environment | Module Resolution |
-|---------------|---------------|-------------------|-------------------|
-| **browser.json** | ES2020 | Modern browsers | bundler |
-| **cjs.json** | Node16 | Node.js CommonJS | Node16 |
-| **esm.json** | ESNext | Node.js ES Modules | Node |
-| **vitest.json** | Node16 | Testing (Node.js) | Node16 |
+| Configuration    | Module System | Target Environment | Module Resolution |
+| ---------------- | ------------- | ------------------ | ----------------- |
+| **browser.json** | ES2020        | Modern browsers    | bundler           |
+| **cjs.json**     | Node16        | Node.js CommonJS   | Node16            |
+| **esm.json**     | ESNext        | Node.js ES Modules | Node              |
+| **vitest.json**  | Node16        | Testing (Node.js)  | Node16            |
 
 ## Build System Integration
 
@@ -211,13 +210,13 @@ The package includes a build system that generates configurations programmatical
 
 ```javascript
 // build.js
-const nodeVersion = 'node22';
+const nodeVersion = "node22";
 
 const tsconfig = {
   base: {
-    extends: `@tsconfig/${nodeVersion}/tsconfig.json`,
+    extends: `@tsconfig/${nodeVersion}/tsconfig.json`
     // ... configuration options
-  },
+  }
   // ... other configurations
 };
 ```
@@ -248,8 +247,8 @@ The package includes comprehensive tests that validate:
 
 ```typescript
 // Example test validation
-expect(output).toContain('export const hello'); // ESM output
-expect(output).toContain('exports.hello = hello'); // CJS output
+expect(output).toContain("export const hello"); // ESM output
+expect(output).toContain("exports.hello = hello"); // CJS output
 ```
 
 ## Common Use Cases
@@ -315,12 +314,7 @@ Create separate configurations for each output:
   "compilerOptions": {
     "noEmit": true
   },
-  "include": [
-    "src/**/*",
-    "test/**/*",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*", "test/**/*", "**/*.test.ts", "**/*.spec.ts"]
 }
 ```
 
@@ -343,9 +337,7 @@ Create separate configurations for each output:
 // packages/app/tsconfig.json
 {
   "extends": "@tempel/tsconfig/esm.json",
-  "references": [
-    { "path": "../shared" }
-  ],
+  "references": [{ "path": "../shared" }],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -359,12 +351,12 @@ Create separate configurations for each output:
 
 ### Compiler Options
 
-| Option | base.json | browser.json | cjs.json | esm.json | vitest.json |
-|--------|-----------|--------------|----------|----------|-------------|
-| `module` | From base | ES2020 | Node16 | ESNext | Node16 |
-| `moduleResolution` | From base | bundler | Node16 | Node | Node16 |
-| `target` | From @tsconfig/node22 | ES2020 | From base | From base | From base |
-| `types` | `["node"]` | From base | From base | From base | `["node", "vitest/globals"]` |
+| Option             | base.json             | browser.json | cjs.json  | esm.json  | vitest.json                  |
+| ------------------ | --------------------- | ------------ | --------- | --------- | ---------------------------- |
+| `module`           | From base             | ES2020       | Node16    | ESNext    | Node16                       |
+| `moduleResolution` | From base             | bundler      | Node16    | Node      | Node16                       |
+| `target`           | From @tsconfig/node22 | ES2020       | From base | From base | From base                    |
+| `types`            | `["node"]`            | From base    | From base | From base | `["node", "vitest/globals"]` |
 
 ### Path Mapping
 
@@ -415,10 +407,10 @@ For production builds, consider these overrides:
 {
   "extends": "@tempel/tsconfig/base.json",
   "compilerOptions": {
-    "sourceMap": false,      // Disable in production
-    "removeComments": true,  // Already enabled
-    "declaration": true,     // For libraries
-    "declarationMap": true   // For better IDE support
+    "sourceMap": false, // Disable in production
+    "removeComments": true, // Already enabled
+    "declaration": true, // For libraries
+    "declarationMap": true // For better IDE support
   }
 }
 ```
@@ -428,11 +420,13 @@ For production builds, consider these overrides:
 ### Common Issues
 
 **Configuration not found**: Ensure the package is installed and the path is correct:
+
 ```bash
 npm list @tempel/tsconfig
 ```
 
 **Module resolution errors**: Check that you're using the right configuration for your environment:
+
 - Browser projects need `moduleResolution: "bundler"`
 - Node.js projects need `moduleResolution: "Node16"`
 
@@ -448,7 +442,7 @@ If you encounter module resolution issues:
 
 ```jsonc
 {
-  "type": "module",  // For ESM projects
+  "type": "module", // For ESM projects
   "type": "commonjs" // For CJS projects (default)
 }
 ```

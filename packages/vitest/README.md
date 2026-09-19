@@ -139,10 +139,7 @@ export default tempelVitestConfig({
   },
 
   // Custom include patterns
-  include: [
-    "src/**/*.{test,spec}.{js,ts,jsx,tsx}",
-    "test/**/*.{test,spec}.{js,ts,jsx,tsx}",
-  ],
+  include: ["src/**/*.{test,spec}.{js,ts,jsx,tsx}", "test/**/*.{test,spec}.{js,ts,jsx,tsx}"],
 });
 ```
 
@@ -204,11 +201,7 @@ You can customize which files are considered test files:
 ```javascript
 export default tempelVitestConfig({
   // Include test patterns
-  include: [
-    "src/**/*.{test,spec}.{js,ts}",
-    "tests/**/*.{js,ts}",
-    "**/__tests__/**/*.{js,ts}",
-  ],
+  include: ["src/**/*.{test,spec}.{js,ts}", "tests/**/*.{js,ts}", "**/__tests__/**/*.{js,ts}"],
 });
 ```
 
@@ -330,11 +323,7 @@ export default tempelVitestConfig({
 import tempelVitestConfig from "@tempel/vitest";
 
 export default tempelVitestConfig({
-  include: [
-    "src/**/__tests__/**/*.{js,ts}",
-    "src/**/*.{test,spec}.{js,ts}",
-    "integration/**/*.test.{js,ts}",
-  ],
+  include: ["src/**/__tests__/**/*.{js,ts}", "src/**/*.{test,spec}.{js,ts}", "integration/**/*.test.{js,ts}"],
 });
 ```
 
@@ -406,8 +395,12 @@ The main export is a configuration factory that accepts Vitest options and retur
 ```json
 {
   "include": [
-    "src/**/*.spec.js", "test/**/*.test.js", "test/**/*.e2e.js",
-    "src/**/*.spec.ts", "test/**/*.test.ts", "test/**/*.e2e.ts"
+    "src/**/*.spec.js",
+    "test/**/*.test.js",
+    "test/**/*.e2e.js",
+    "src/**/*.spec.ts",
+    "test/**/*.test.ts",
+    "test/**/*.e2e.ts"
   ],
   "reporters": ["verbose"],
   "coverage": {

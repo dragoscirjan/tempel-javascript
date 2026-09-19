@@ -36,11 +36,11 @@ run = "pnpm exec jscpd ./packages/**/src"
 
 [tasks.format]
 description = "Format repository files"
-run = "pnpm --filter ./packages/prettier exec -- prettier --write ../../README.md ../../package.json ../../packages/*/package.json ../../docs/*.md ../../docs/**/*.md ../../docs/.vitepress/config.ts"
+run = "pnpm --filter ./packages/prettier exec -- prettier --ignore-path ../../.prettierignore --write '../../**/*.{cjs,js,json,json5,jsonc,md,mjs,ts,toml,yaml,yml}'"
 
 [tasks."format:check"]
 description = "Check formatting without modifying files"
-run = "pnpm --filter ./packages/prettier exec -- prettier --check ../../README.md ../../package.json ../../packages/*/package.json ../../docs/*.md ../../docs/**/*.md ../../docs/.vitepress/config.ts"
+run = "pnpm --filter ./packages/prettier exec -- prettier --ignore-path ../../.prettierignore --check '../../**/*.{cjs,js,json,json5,jsonc,md,mjs,ts,toml,yaml,yml}'"
 
 [tasks.docs]
 description = "Build the VitePress documentation site"
