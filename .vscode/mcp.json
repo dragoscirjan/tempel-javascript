@@ -6,14 +6,7 @@
     },
     "ts-language-server": {
       "command": "${userHome}/go/bin/mcp-language-server",
-      "args": [
-        "--workspace",
-        "${workspaceFolder}",
-        "--lsp",
-        "typescript-language-server",
-        "--",
-        "--stdio"
-      ],
+      "args": ["--workspace", "${workspaceFolder}", "--lsp", "typescript-language-server", "--", "--stdio"],
       "env": {
         "LOG_LEVEL": "DEBUG"
       }
