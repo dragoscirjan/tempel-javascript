@@ -17,12 +17,15 @@ The action does not install tools or dependencies. It does not read npm credenti
 
 ## Usage
 
+This default-token example is a template. Replace every `<commit-sha>` with a reviewed full commit SHA or release tag before use. The validation step expects `ci.yml` on the default branch with a `workflow_dispatch` trigger.
+
 ```yaml
 jobs:
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       contents: write
       pull-requests: write
     concurrency:
@@ -32,6 +35,7 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
+          persist-credentials: false
       - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
@@ -39,29 +43,36 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
-      - uses: dragoscirjan/tempel-javascript/.github/actions/release@<commit-sha>
+      - id: release
+        uses: dragoscirjan/tempel-javascript/.github/actions/release@<commit-sha>
         with:
           config: .github/tempel-release.yml
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Validate the version pull request
+        if: steps.release.outputs.pr-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.release.outputs.pr-number }}
+        run: |
+          head_ref="$(gh pr view "${PR_NUMBER}" --json headRefName --jq .headRefName)"
+          gh workflow run ci.yml --ref "${head_ref}"
 ```
-
-Pin external use to a reviewed commit SHA or release tag.
 
 ## GitHub authentication
 
-Without authentication inputs, the action uses `${{ github.token }}`. That token can create version pull requests, tags, and releases when the job grants `contents: write` and `pull-requests: write`. GitHub does not start new workflow runs for pull requests created with the default token, so the caller must dispatch validation after the action returns `pr-number`.
+Without authentication inputs, the action uses `${{ github.token }}`. That token can create version pull requests, tags, and releases when the job grants `contents: write` and `pull-requests: write`. A pull request that it creates or updates starts `opened`, `synchronize`, or `reopened` workflow runs in an approval-required state. Callers that need unattended validation can dispatch a separate `workflow_dispatch` run after the action returns `pr-number`, as shown above.
 
 ### Required GitHub permissions
 
 | Credential                         | Repository access required by this action                                                                                         |
 | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Default `${{ github.token }}`      | Job permissions `contents: write` and `pull-requests: write`.                                                                     |
+| Default `${{ github.token }}`      | Job permissions `contents: write` and `pull-requests: write`. Add `actions: write` when the caller dispatches validation.         |
 | Fine-grained personal access token | Access to the target repository, Metadata read, Contents read and write, and Pull requests read and write.                        |
 | Classic personal access token      | `public_repo` scope for a public repository or `repo` scope when private repository access is required.                           |
 | GitHub App installation token      | The App must be installed on the target repository with Metadata read, Contents read and write, and Pull requests read and write. |
 
-The release action itself does not require Actions write permission. Grant Actions read and write to a fine-grained PAT or GitHub App only when the caller also uses that credential to invoke the workflow-dispatch API. A token cannot exceed the repository access of its user or App installation. Organization policies can require approval for fine-grained tokens or SAML SSO authorization for classic tokens.
+The release action itself does not require Actions write permission. Grant Actions write to the default token, a fine-grained PAT, or a GitHub App only when the caller also uses that credential to invoke the workflow-dispatch API. A token cannot exceed the repository access of its user or App installation. Organization policies can require approval for fine-grained tokens or SAML SSO authorization for classic tokens.
 
 See GitHub's references for [fine-grained PAT permissions](https://docs.github.com/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens), [classic token scopes](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps), and [GitHub App permissions](https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps).
 

@@ -41,7 +41,7 @@ The release job uses the repository's release action after validation succeeds:
     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-It has serialized concurrency and runs only for pushes to `main`. The caller configures full Git history, Node.js, pnpm, dependencies, npm registry access, and write permissions before this step. Tempel uses a GitHub App installation token when `TEMPEL_RELEASE_APP_CLIENT_ID` and `TEMPEL_RELEASE_APP_PRIVATE_KEY` are configured. Otherwise, it falls back to the default GitHub token and explicitly dispatches CI for a new version branch because GitHub suppresses ordinary pull-request events created by that token.
+It has serialized concurrency and runs only for pushes to `main`. The caller configures full Git history, Node.js, pnpm, dependencies, npm registry access, and write permissions before this step. Tempel uses a GitHub App installation token when `TEMPEL_RELEASE_APP_CLIENT_ID` and `TEMPEL_RELEASE_APP_PRIVATE_KEY` are configured. Otherwise, it falls back to the default GitHub token. Pull-request workflow runs created by that token require approval, so the release job dispatches a separate CI run for the new version branch.
 
 ## The release action
 

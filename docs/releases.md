@@ -17,7 +17,7 @@ Select each affected `@tempel/*` package and choose the appropriate semver level
 1. A merge to `main` runs the full validation pipeline.
 2. The release action checks Changesets state, creates a GitHub App token when the repository credentials are configured, and opens or updates a version pull request when changes are pending.
 3. The action runs `changeset version`, updates `pnpm-lock.yaml`, and runs `format:packages` before Changesets commits that pull request.
-4. A pull request created by the App starts CI normally. When App credentials are absent, the job uses the default GitHub token and explicitly dispatches CI for the version branch.
+4. A pull request created by the App starts CI normally. When App credentials are absent, pull-request workflow runs require approval, so the job dispatches a separate CI run for the version branch.
 5. Merging the version pull request starts the pipeline again.
 6. The action runs the build hook, publishes changed packages, pushes Changesets tags, and creates GitHub releases.
 
