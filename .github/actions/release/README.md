@@ -52,7 +52,20 @@ Pin external use to a reviewed commit SHA or release tag.
 
 Without authentication inputs, the action uses `${{ github.token }}`. That token can create version pull requests, tags, and releases when the job grants `contents: write` and `pull-requests: write`. GitHub does not start new workflow runs for pull requests created with the default token, so the caller must dispatch validation after the action returns `pr-number`.
 
-For first-class GitHub App authentication, install an App on the current repository with read access to metadata and write access to contents and pull requests. Store its client ID in a repository variable and its private key in a repository secret:
+### Required GitHub permissions
+
+| Credential                         | Repository access required by this action                                                                                         |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Default `${{ github.token }}`      | Job permissions `contents: write` and `pull-requests: write`.                                                                     |
+| Fine-grained personal access token | Access to the target repository, Metadata read, Contents read and write, and Pull requests read and write.                        |
+| Classic personal access token      | `public_repo` scope for a public repository or `repo` scope when private repository access is required.                           |
+| GitHub App installation token      | The App must be installed on the target repository with Metadata read, Contents read and write, and Pull requests read and write. |
+
+The release action itself does not require Actions write permission. Grant Actions read and write to a fine-grained PAT or GitHub App only when the caller also uses that credential to invoke the workflow-dispatch API. A token cannot exceed the repository access of its user or App installation. Organization policies can require approval for fine-grained tokens or SAML SSO authorization for classic tokens.
+
+See GitHub's references for [fine-grained PAT permissions](https://docs.github.com/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens), [classic token scopes](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps), and [GitHub App permissions](https://docs.github.com/en/rest/authentication/permissions-required-for-github-apps).
+
+For first-class GitHub App authentication, install an App on the current repository with the permissions listed above. Store its client ID in a repository variable and its private key in a repository secret:
 
 ```yaml
 - uses: dragoscirjan/tempel-javascript/.github/actions/release@<commit-sha>

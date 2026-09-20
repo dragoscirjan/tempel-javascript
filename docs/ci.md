@@ -55,7 +55,9 @@ The action expects `@changesets/cli` version 3 and a Node.js version supported b
 
 A single optional JSON or YAML file configures the project path, package manager, executor, named package-script hooks, lockfile update, pull request metadata, tags, and GitHub releases. Unknown keys fail validation. Configuration and project paths cannot escape the checked-out workspace. Hooks are script names, not shell commands.
 
-The caller remains responsible for checkout, runtime and package-manager setup, dependency installation, permissions, protected environments, and npm authentication. GitHub authentication can use the default token, an explicit token, or a GitHub App client ID and private key. The action has no npm token input and requires `NODE_AUTH_TOKEN` for publication; trusted publishing is not supported in the first release. See the [complete release action reference](https://github.com/dragoscirjan/tempel-javascript/blob/main/.github/actions/release/README.md) and the [release guide](releases.md).
+The caller remains responsible for checkout, runtime and package-manager setup, dependency installation, permissions, protected environments, and npm authentication. GitHub authentication can use the default token, an explicit token, or a GitHub App client ID and private key. Fine-grained PATs and GitHub Apps need Metadata read, Contents write, and Pull requests write on the target repository. A classic PAT needs `public_repo` for a public repository or `repo` when private repository access is required. Actions write is needed only when that credential also dispatches workflows, not by the release action itself.
+
+The action has no npm token input and requires `NODE_AUTH_TOKEN` for publication; trusted publishing is not supported in the first release. See the [complete release action reference](https://github.com/dragoscirjan/tempel-javascript/blob/main/.github/actions/release/README.md) and the [release guide](releases.md).
 
 ## The validate action
 
