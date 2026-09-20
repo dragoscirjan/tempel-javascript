@@ -92,6 +92,8 @@ When a package API or default changes, update that package's README as well as t
 
 Run `mise run docs` after changing `docs/` or `docs/.vitepress/`.
 
+When changing `.github/actions/release/src/`, run `pnpm run build:release-action` and commit the updated `.github/actions/release/dist/` bundle with its source.
+
 ## Add a Changeset
 
 A user-visible package change needs a Changeset:

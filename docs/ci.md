@@ -1,16 +1,18 @@
 # Continuous integration
 
-The repository includes a reusable composite GitHub Action for project validation. It runs format, lint, duplicate-check, test, and audit scripts with a selected task executor.
+The repository includes composite GitHub Actions for project validation and Changesets releases. Callers install their own runtimes and dependencies before either action runs.
 
 ## Repository workflows
 
-Three workflows run for pull requests and pushes to `main`:
+Five workflows run for pull requests and pushes to `main`:
 
 | Workflow                         | What it does                                                                                                                                                                                |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | CI                               | Builds the packages, runs the validate action, and builds the documentation. On a push to `main`, its release job opens or updates a Changesets pull request or publishes changed packages. |
 | Test validate action             | Checks the shell scripts with Bash and ShellCheck, then runs the shell test suite on Ubuntu and macOS.                                                                                      |
 | Test validate action integration | Runs the composite action against a temporary package-script fixture and checks success, fail-fast, Node.js, and duplicate-warning behavior.                                                |
+| Test release action              | Builds the committed release bundle and tests configuration, command order, authentication checks, and failures on Ubuntu and macOS.                                                        |
+| Test release action integration  | Runs the composite release action against an isolated private fixture, asserts `none` mode, and checks output propagation.                                                                  |
 
 The CI workflow configures the action like this:
 
@@ -25,6 +27,33 @@ The CI workflow configures the action like this:
     script-test: test
     script-audit: audit
 ```
+
+The release job uses the repository's release action after validation succeeds:
+
+```yaml
+- id: release
+  uses: ./.github/actions/release
+  with:
+    config: .github/tempel-release.yml
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+It has serialized concurrency and runs only for pushes to `main`. The caller configures full Git history, Node.js, pnpm, dependencies, npm registry access, and write permissions before this step. When a version pull request is created with the default GitHub token, the release job dispatches CI for its head branch because GitHub suppresses ordinary pull-request events created by that token.
+
+## The release action
+
+`.github/actions/release` uses Changesets Action v2 to choose one of three modes:
+
+- `none` when no version or publication work is pending;
+- `version` when pending Changesets should create or update a version pull request;
+- `publish` when changed package versions should be published.
+
+The action expects `@changesets/cli` version 3 and a Node.js version supported by that CLI. Yarn callers must use the `node-modules` linker. It exposes the selected mode, version pull request number, publication state, and published package list as outputs. It also writes a bounded job summary.
+
+A single optional JSON or YAML file configures the project path, package manager, executor, named package-script hooks, lockfile update, pull request metadata, tags, and GitHub releases. Unknown keys fail validation. Configuration and project paths cannot escape the checked-out workspace. Hooks are script names, not shell commands.
+
+The caller remains responsible for checkout, runtime and package-manager setup, dependency installation, permissions, protected environments, and npm authentication. The action has no npm token input and requires `NODE_AUTH_TOKEN` for publication; trusted publishing is not supported in the first release. See the [complete release action reference](https://github.com/dragoscirjan/tempel-javascript/blob/main/.github/actions/release/README.md) and the [release guide](releases.md).
 
 ## The validate action
 

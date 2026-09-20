@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: pnpm
@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Mise
-        uses: jdx/mise-action@v2
+        uses: jdx/mise-action@c37c93293d6b742fc901e1406b8f764f6fb19dac # v2
 
       - name: Clean build artifacts
         run: mise run clean
@@ -58,20 +58,24 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: quality
     runs-on: ubuntu-latest
+    concurrency:
+      group: npm-release
+      cancel-in-progress: false
     permissions:
+      actions: write
       contents: write
       pull-requests: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: 22
           cache: pnpm
@@ -81,19 +85,22 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Create release PR or publish packages
-        uses: changesets/action@v1
+        id: release
+        uses: ./.github/actions/release
         with:
-          # changesets writes package.json files with raw JSON.stringify,
-          # which does not match the repository prettier style; reformat
-          # before committing so `format:check` keeps passing.
-          version: pnpm run version:modules && pnpm run format:packages
-          publish: pnpm run release:modules
-          title: 'chore: release packages'
-          commit: 'chore(#50): release packages'
+          config: .github/tempel-release.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           # The release job only runs after the quality job passes and the
           # commit content is machine-generated; skip husky hooks (they
           # require mise, which is not installed in this job).
           HUSKY: 0
+
+      - name: Validate the version pull request
+        if: steps.release.outputs.pr-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.release.outputs.pr-number }}
+        run: |
+          head_ref="$(gh pr view "${PR_NUMBER}" --json headRefName --jq .headRefName)"
+          gh workflow run ci.yml --ref "${head_ref}"

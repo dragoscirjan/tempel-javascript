@@ -13,9 +13,11 @@ Tempel publishes shared configuration for JavaScript and TypeScript projects. Th
 | [`@tempel/jest`](packages/jest)             | Jest configuration factory                                            |
 | [`@tempel/commitlint`](packages/commitlint) | Conventional Commits configuration factory                            |
 
-## Validation action
+## GitHub Actions
 
 The reusable [validate action](docs/ci.md) runs a project's format, lint, duplicate-check, test, and audit scripts with npm, pnpm, Yarn, Node.js, Bun, Deno, or Nub. The action reports each result in the GitHub job summary.
+
+The reusable [release action](.github/actions/release/README.md) creates Changesets version pull requests and publishes Node packages from single-package or workspace repositories. A small optional JSON or YAML file configures the project path, package manager, named script hooks, lockfile handling, and release policy.
 
 ## Documentation
 
