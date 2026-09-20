@@ -87,8 +87,5 @@ typings/
 # mocha
 .junit.xml
 
-# lock files
-package-lock.json
-yarn.lock
-
 __snapshots__
+.web_stash.db
