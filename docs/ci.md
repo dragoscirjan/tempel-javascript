@@ -35,11 +35,13 @@ The release job uses the repository's release action after validation succeeds:
   uses: ./.github/actions/release
   with:
     config: .github/tempel-release.yml
+    github-app-client-id: ${{ vars.TEMPEL_RELEASE_APP_CLIENT_ID }}
+    github-app-private-key: ${{ secrets.TEMPEL_RELEASE_APP_PRIVATE_KEY }}
   env:
     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-It has serialized concurrency and runs only for pushes to `main`. The caller configures full Git history, Node.js, pnpm, dependencies, npm registry access, and write permissions before this step. When a version pull request is created with the default GitHub token, the release job dispatches CI for its head branch because GitHub suppresses ordinary pull-request events created by that token.
+It has serialized concurrency and runs only for pushes to `main`. The caller configures full Git history, Node.js, pnpm, dependencies, npm registry access, and write permissions before this step. Tempel uses a GitHub App installation token when `TEMPEL_RELEASE_APP_CLIENT_ID` and `TEMPEL_RELEASE_APP_PRIVATE_KEY` are configured. Otherwise, it falls back to the default GitHub token and explicitly dispatches CI for a new version branch because GitHub suppresses ordinary pull-request events created by that token.
 
 ## The release action
 
@@ -53,7 +55,7 @@ The action expects `@changesets/cli` version 3 and a Node.js version supported b
 
 A single optional JSON or YAML file configures the project path, package manager, executor, named package-script hooks, lockfile update, pull request metadata, tags, and GitHub releases. Unknown keys fail validation. Configuration and project paths cannot escape the checked-out workspace. Hooks are script names, not shell commands.
 
-The caller remains responsible for checkout, runtime and package-manager setup, dependency installation, permissions, protected environments, and npm authentication. The action has no npm token input and requires `NODE_AUTH_TOKEN` for publication; trusted publishing is not supported in the first release. See the [complete release action reference](https://github.com/dragoscirjan/tempel-javascript/blob/main/.github/actions/release/README.md) and the [release guide](releases.md).
+The caller remains responsible for checkout, runtime and package-manager setup, dependency installation, permissions, protected environments, and npm authentication. GitHub authentication can use the default token, an explicit token, or a GitHub App client ID and private key. The action has no npm token input and requires `NODE_AUTH_TOKEN` for publication; trusted publishing is not supported in the first release. See the [complete release action reference](https://github.com/dragoscirjan/tempel-javascript/blob/main/.github/actions/release/README.md) and the [release guide](releases.md).
 
 ## The validate action
 

@@ -12,9 +12,17 @@ inputs:
     required: false
     default: ''
   github-token:
-    description: GitHub token used for version pull requests, tags, and GitHub releases.
+    description: Optional GitHub, personal access, or App installation token. Defaults to github.token.
     required: false
-    default: ${{ github.token }}
+    default: ''
+  github-app-client-id:
+    description: Optional GitHub App client ID. Requires github-app-private-key.
+    required: false
+    default: ''
+  github-app-private-key:
+    description: Optional GitHub App private key. Requires github-app-client-id.
+    required: false
+    default: ''
 
 outputs:
   mode:
@@ -38,6 +46,8 @@ runs:
       shell: bash
       env:
         TEMPEL_RELEASE_CONFIG: ${{ inputs.config }}
+        TEMPEL_RELEASE_GITHUB_APP_CLIENT_ID_SET: ${{ inputs.github-app-client-id != '' }}
+        TEMPEL_RELEASE_GITHUB_APP_PRIVATE_KEY_SET: ${{ inputs.github-app-private-key != '' }}
         TEMPEL_RELEASE_WORKSPACE: ${{ github.workspace }}
       run: node "${GITHUB_ACTION_PATH}/dist/index.js" resolve
 
@@ -47,6 +57,16 @@ runs:
       with:
         cwd: ${{ steps.config.outputs.cwd }}
 
+    - name: Create GitHub App token
+      id: github-app
+      if: steps.mode.outputs.mode != 'none' && steps.config.outputs.use-github-app == 'true'
+      uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+      with:
+        client-id: ${{ inputs.github-app-client-id }}
+        private-key: ${{ inputs.github-app-private-key }}
+        permission-contents: write
+        permission-pull-requests: write
+
     - name: Create or update version pull request
       id: version
       if: steps.mode.outputs.mode == 'version'
@@ -55,7 +75,7 @@ runs:
         TEMPEL_RELEASE_CONFIG: ${{ inputs.config }}
         TEMPEL_RELEASE_WORKSPACE: ${{ github.workspace }}
       with:
-        github-token: ${{ inputs.github-token }}
+        github-token: ${{ steps.github-app.outputs.token || inputs.github-token || github.token }}
         script: node "${{ github.action_path }}/dist/index.js" version
         commit-message: ${{ steps.config.outputs.commit-message }}
         pr-title: ${{ steps.config.outputs.pr-title }}
@@ -71,7 +91,7 @@ runs:
         TEMPEL_RELEASE_CONFIG: ${{ inputs.config }}
         TEMPEL_RELEASE_WORKSPACE: ${{ github.workspace }}
       with:
-        github-token: ${{ inputs.github-token }}
+        github-token: ${{ steps.github-app.outputs.token || inputs.github-token || github.token }}
         script: node "${{ github.action_path }}/dist/index.js" publish
         create-github-releases: ${{ steps.config.outputs.create-github-releases }}
         push-git-tags: ${{ steps.config.outputs.push-git-tags }}

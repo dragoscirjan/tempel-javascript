@@ -15,9 +15,9 @@ Select each affected `@tempel/*` package and choose the appropriate semver level
 ## Automated release flow
 
 1. A merge to `main` runs the full validation pipeline.
-2. The release action checks Changesets state and opens or updates a version pull request when changes are pending.
+2. The release action checks Changesets state, creates a GitHub App token when the repository credentials are configured, and opens or updates a version pull request when changes are pending.
 3. The action runs `changeset version`, updates `pnpm-lock.yaml`, and runs `format:packages` before Changesets commits that pull request.
-4. The release job dispatches CI for the version branch because pull requests created with the default GitHub token do not emit another workflow event.
+4. A pull request created by the App starts CI normally. When App credentials are absent, the job uses the default GitHub token and explicitly dispatches CI for the version branch.
 5. Merging the version pull request starts the pipeline again.
 6. The action runs the build hook, publishes changed packages, pushes Changesets tags, and creates GitHub releases.
 
@@ -38,6 +38,6 @@ Publishing requires `NODE_AUTH_TOKEN` to be configured for npm. Use the automate
 
 ## Reusing the action
 
-The release action also supports other Node.js repositories, including workspace monorepos. The caller provides the checkout, Node.js and package-manager setup, installed dependencies, GitHub permissions, and npm authentication. An optional versioned JSON or YAML file selects the project path and policy without exposing shell-command inputs.
+The release action also supports other Node.js repositories, including workspace monorepos. The caller provides the checkout, Node.js and package-manager setup, installed dependencies, GitHub permissions, and npm authentication. GitHub authentication can use the default token, an explicit token, a pre-generated App installation token, or a GitHub App client ID and private key. An optional versioned JSON or YAML file selects the project path and policy without exposing shell-command inputs.
 
 See the [continuous integration guide](ci.md) for the repository integration and the [action reference](https://github.com/dragoscirjan/tempel-javascript/blob/main/.github/actions/release/README.md) for its complete input, output, configuration, and authentication contract.

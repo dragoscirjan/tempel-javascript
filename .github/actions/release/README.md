@@ -46,7 +46,27 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-Pin external use to a reviewed commit SHA or release tag. The default `github-token` is sufficient for pull requests, tags, and releases, but GitHub does not start new workflow runs for pull requests created with that token. Pass a GitHub App token or personal access token when version pull requests must trigger CI automatically, or dispatch validation from the caller after the action returns `pr-number`.
+Pin external use to a reviewed commit SHA or release tag.
+
+## GitHub authentication
+
+Without authentication inputs, the action uses `${{ github.token }}`. That token can create version pull requests, tags, and releases when the job grants `contents: write` and `pull-requests: write`. GitHub does not start new workflow runs for pull requests created with the default token, so the caller must dispatch validation after the action returns `pr-number`.
+
+For first-class GitHub App authentication, install an App on the current repository with read access to metadata and write access to contents and pull requests. Store its client ID in a repository variable and its private key in a repository secret:
+
+```yaml
+- uses: dragoscirjan/tempel-javascript/.github/actions/release@<commit-sha>
+  with:
+    config: .github/tempel-release.yml
+    github-app-client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+    github-app-private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+The action uses the pinned official `actions/create-github-app-token` action to create an installation token for the current repository. The token is masked and revoked when the job finishes. Pull requests and pushes created by the App can trigger workflows normally.
+
+Callers may instead pass a pre-generated GitHub App installation token or a personal access token through `github-token`. When complete App credentials are present, their generated token takes precedence over `github-token`. Supplying only one App credential fails during preflight.
 
 ## Configuration
 
@@ -137,10 +157,12 @@ The action supports a title, commit message, base branch, and Changesets draft m
 
 ## Inputs
 
-| Input          | Default               | Description                                                      |
-| -------------- | --------------------- | ---------------------------------------------------------------- |
-| `config`       | Empty                 | Optional JSON or YAML configuration file.                        |
-| `github-token` | `${{ github.token }}` | Token used for version pull requests, tags, and GitHub releases. |
+| Input                    | Default               | Description                                                                             |
+| ------------------------ | --------------------- | --------------------------------------------------------------------------------------- |
+| `config`                 | Empty                 | Optional JSON or YAML configuration file.                                               |
+| `github-token`           | `${{ github.token }}` | GitHub token, personal access token, or pre-generated App installation token.           |
+| `github-app-client-id`   | Empty                 | GitHub App client ID. Must be paired with `github-app-private-key`.                     |
+| `github-app-private-key` | Empty                 | GitHub App private key. Must be paired with `github-app-client-id` and passed secretly. |
 
 The action does not accept an npm token input. The first release requires `NODE_AUTH_TOKEN` in the caller environment. npm trusted publishing is not enabled until the action can validate the package-level trusted-publisher setup and npm CLI version.
 

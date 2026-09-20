@@ -193,6 +193,15 @@ function resolveChangesetsCli(projectPath: string, workspace: string, packageMan
   return path.resolve(path.dirname(packageFile), binPath);
 }
 
+/** Rejects an incomplete GitHub App credential pair before mode selection. */
+function validateGitHubAuthentication(): void {
+  const clientIdSet = process.env.TEMPEL_RELEASE_GITHUB_APP_CLIENT_ID_SET === 'true';
+  const privateKeySet = process.env.TEMPEL_RELEASE_GITHUB_APP_PRIVATE_KEY_SET === 'true';
+  if (clientIdSet !== privateKeySet) {
+    throw new Error('github-app-client-id and github-app-private-key must be supplied together.');
+  }
+}
+
 /** Loads, validates, and normalizes the release configuration. */
 function loadConfig(configArgument?: string): ReleaseConfig {
   const workspace = realpathSync(process.env.TEMPEL_RELEASE_WORKSPACE ?? process.env.GITHUB_WORKSPACE ?? process.cwd());
@@ -365,6 +374,7 @@ function writeActionOutputs(config: ReleaseConfig): void {
     'pr-draft': config.pullRequestDraft,
     'create-github-releases': String(config.createGithubReleases),
     'push-git-tags': String(config.pushGitTags),
+    'use-github-app': String(process.env.TEMPEL_RELEASE_GITHUB_APP_CLIENT_ID_SET === 'true'),
   };
 
   if (!output) {
@@ -451,6 +461,7 @@ function main(): void {
     return;
   }
 
+  validateGitHubAuthentication();
   const config = loadConfig(readOption('--config'));
   if (operation === 'resolve') {
     writeActionOutputs(config);

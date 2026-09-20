@@ -175,6 +175,7 @@ GITHUB_OUTPUT="${output_file}" node "${cli}" resolve
 grep -Fx 'cwd=.' "${output_file}" >/dev/null
 grep -Fx 'pr-title=chore: release packages' "${output_file}" >/dev/null
 grep -Fx 'create-github-releases=true' "${output_file}" >/dev/null
+grep -Fx 'use-github-app=false' "${output_file}" >/dev/null
 
 : >"${RELEASE_LOG}"
 node "${cli}" version
@@ -197,6 +198,21 @@ cat >"${fixture}/release.json" <<'JSON'
 }
 JSON
 TEMPEL_RELEASE_CONFIG=release.json node "${cli}" resolve >/dev/null
+
+assert_fails 'must be supplied together' \
+  env TEMPEL_RELEASE_GITHUB_APP_CLIENT_ID_SET=true \
+  TEMPEL_RELEASE_GITHUB_APP_PRIVATE_KEY_SET=false node "${cli}" resolve
+app_output_file="${temporary_root}/github-app-output"
+GITHUB_OUTPUT="${app_output_file}" \
+  TEMPEL_RELEASE_GITHUB_APP_CLIENT_ID_SET=true \
+  TEMPEL_RELEASE_GITHUB_APP_PRIVATE_KEY_SET=true node "${cli}" resolve
+grep -Fx 'use-github-app=true' "${app_output_file}" >/dev/null
+token_wiring='github-token: $'
+token_wiring+='{{ steps.github-app.outputs.token || inputs.github-token || github.token }}'
+[[ "$(grep -Fc "${token_wiring}" "${action_root}/action.yml")" -eq 2 ]] || \
+  fail 'GitHub App token is not forwarded to both Changesets operations'
+grep -F 'actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1' \
+  "${action_root}/action.yml" >/dev/null
 
 cat >"${fixture}/invalid.yml" <<'YAML'
 version: 1
