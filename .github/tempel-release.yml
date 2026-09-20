@@ -1,0 +1,24 @@
+version: 1
+engine: changesets
+
+project:
+  path: .
+  executor: pnpm
+  package_manager: pnpm
+  use_mise: false
+
+versioning:
+  update_lockfile: true
+  after:
+    - format:packages
+
+publishing:
+  before:
+    - build
+  create_github_releases: true
+  push_git_tags: true
+
+pull_request:
+  title: 'chore: release packages'
+  commit_message: 'chore(#84): release packages'
+  base_branch: main

@@ -13,7 +13,7 @@ Tempel publishes six packages under the `@tempel` scope:
 - `packages/jest`
 - `packages/commitlint`
 
-The repository also contains the `.github/actions/validate` composite action and the VitePress site in `docs/`. It does not have an `extensions/` system or a global release package.
+The repository also contains reusable validation and release actions under `.github/actions/` and the VitePress site in `docs/`. It does not have an `extensions/` system or a global release package.
 
 ## Working rules
 

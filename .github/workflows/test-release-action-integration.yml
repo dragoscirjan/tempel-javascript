@@ -1,0 +1,107 @@
+name: Test release action integration
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/actions/release/**'
+      - '.github/workflows/test-release-action-integration.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  pull_request:
+    paths:
+      - '.github/actions/release/**'
+      - '.github/workflows/test-release-action-integration.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  no-pending-release:
+    name: No pending release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Create isolated fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          fixture="${GITHUB_WORKSPACE}/.tmp/release-action-none"
+          rm -rf "${fixture}"
+          mkdir -p "${fixture}/.changeset"
+          printf 'node_modules/\n' >"${fixture}/.gitignore"
+          cat >"${fixture}/package.json" <<'JSON'
+          {
+            "name": "release-action-none-fixture",
+            "version": "1.0.0",
+            "private": true,
+            "packageManager": "pnpm@10.0.0",
+            "devDependencies": {
+              "@changesets/cli": "^3.0.3"
+            }
+          }
+          JSON
+          cat >"${fixture}/.changeset/config.json" <<'JSON'
+          {
+            "access": "restricted",
+            "baseBranch": "main",
+            "commit": false,
+            "fixed": [],
+            "ignore": [],
+            "linked": [],
+            "privatePackages": {"version": false, "tag": false},
+            "updateInternalDependencies": "patch"
+          }
+          JSON
+          cat >"${fixture}/release.yml" <<'YAML'
+          version: 1
+          engine: changesets
+          project:
+            path: .tmp/release-action-none
+            executor: pnpm
+            package_manager: pnpm
+          YAML
+          pnpm --dir "${fixture}" install --ignore-workspace
+          git -C "${fixture}" init --initial-branch=main
+          git -C "${fixture}" config user.name tempel-test
+          git -C "${fixture}" config user.email tempel-test@example.invalid
+          git -C "${fixture}" add .
+          git -C "${fixture}" commit --message 'test: create release fixture'
+
+      - name: Run release action
+        id: release
+        uses: ./.github/actions/release
+        with:
+          config: .tmp/release-action-none/release.yml
+
+      - name: Check no-op outputs
+        shell: bash
+        env:
+          MODE: ${{ steps.release.outputs.mode }}
+          PR_NUMBER: ${{ steps.release.outputs.pr-number }}
+          PUBLISHED: ${{ steps.release.outputs.published }}
+          PUBLISHED_PACKAGES: ${{ steps.release.outputs.published-packages }}
+        run: |
+          set -euo pipefail
+          [[ "${MODE}" == 'none' ]]
+          [[ -z "${PR_NUMBER}" ]]
+          [[ "${PUBLISHED}" == 'false' ]]
+          [[ "${PUBLISHED_PACKAGES}" == '[]' ]]
+
+      - name: Remove fixture
+        if: always()
+        shell: bash
+        run: rm -rf "${GITHUB_WORKSPACE}/.tmp/release-action-none"
