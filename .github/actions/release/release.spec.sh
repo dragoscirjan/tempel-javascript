@@ -27,6 +27,13 @@ assert_fails() {
   }
 }
 
+node -e "const manifest = require(process.argv[1]); process.exit(manifest.devDependencies?.prettier ? 0 : 1)" \
+  "${repo_root}/package.json" || fail 'repository root must declare Prettier for Changesets changelog formatting'
+changelog_fixture="${temporary_root}/CHANGELOG.md"
+printf '# Changelog\n' >"${changelog_fixture}"
+pnpm --dir "${repo_root}" exec prettier --write --no-error-on-unmatched-pattern "${changelog_fixture}" >/dev/null || \
+  fail 'repository-root Prettier could not format a changelog'
+
 create_fixture() {
   local fixture="$1"
   mkdir -p "${fixture}/.changeset" "${fixture}/node_modules/@changesets/cli" "${fixture}/bin"
