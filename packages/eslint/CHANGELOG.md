@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+
+### Major Changes
+
+- 9c547e4: Upgrade the shared configuration to ESLint 10, replace `eslint-plugin-import` with the ESLint 10-compatible `eslint-plugin-import-x`, and require consumers to install ESLint 10 as a peer dependency.
+
 ## 1.3.1
 
 ### Patch Changes
