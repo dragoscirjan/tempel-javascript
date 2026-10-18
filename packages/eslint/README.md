@@ -58,10 +58,10 @@ A comprehensive, modular ESLint configuration designed for JavaScript and TypeSc
 ## Installation
 
 ```bash
-npm install --save-dev @tempel/eslint
+npm install --save-dev eslint @tempel/eslint
 ```
 
-This package includes all necessary dependencies, so you don't need to install ESLint or any plugins separately.
+ESLint 10 is a peer dependency. All plugins used by the shared configuration are installed with `@tempel/eslint`. Node.js `20.19.0`, `22.13.0`, or newer is required.
 
 ## Module Compatibility
 

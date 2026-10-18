@@ -5,7 +5,7 @@
 Install only the packages your project needs. This command installs the full set:
 
 ```bash
-pnpm add -D @tempel/eslint @tempel/prettier @tempel/tsconfig @tempel/vitest @tempel/jest @tempel/commitlint @commitlint/cli husky
+pnpm add -D eslint @tempel/eslint @tempel/prettier @tempel/tsconfig @tempel/vitest @tempel/jest @tempel/commitlint @commitlint/cli husky
 ```
 
 ## Configure ESLint

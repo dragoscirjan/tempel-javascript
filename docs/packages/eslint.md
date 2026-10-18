@@ -16,6 +16,12 @@ JSX and TSX receive the normal language rules. The Vitest override does not matc
 
 ## Basic usage
 
+Install ESLint 10 alongside the shared configuration. Node.js `20.19.0`, `22.13.0`, or newer is required.
+
+```bash
+pnpm add -D eslint @tempel/eslint
+```
+
 The default export is the result of `createEslintConfig()`:
 
 ```js
