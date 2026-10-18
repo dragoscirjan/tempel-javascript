@@ -1,5 +1,6 @@
 
 mise run lint:check
+mise run audit
 mise run duplicate-check
 mise run build
 
