@@ -99,7 +99,7 @@ function readConfigFile(configPath: string): JsonObject {
     parsed = path.extname(configPath).toLowerCase() === '.json' ? JSON.parse(source) : parseYaml(source);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`Cannot parse release configuration ${configPath}: ${message}`);
+    throw new Error(`Cannot parse release configuration ${configPath}: ${message}`, { cause: error });
   }
 
   if (parsed === null || typeof parsed !== 'object' || Array.isArray(parsed)) {

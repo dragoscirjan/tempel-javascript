@@ -1,6 +1,6 @@
 import esConfigGlobal from '@eslint/js';
 import vitest from '@vitest/eslint-plugin';
-import imports from 'eslint-plugin-import';
+import { importX as imports } from 'eslint-plugin-import-x';
 import importNodeBuiltin from 'eslint-plugin-node-import';
 import globals from 'globals';
 import tsConfigGlobal from 'typescript-eslint';
