@@ -19,12 +19,12 @@
   "license": "MIT",
   "description": "Jest configuration factory for Tempel projects",
   "dependencies": {
-    "jest": "^30.5.1"
+    "jest": "^30.5.2"
   },
   "devDependencies": {
     "@tempel/vitest": "workspace:*",
     "rimraf": "^6.1.3",
-    "typescript": "5.9.3",
+    "typescript": "7.0.2",
     "vitest": "^4.0.10"
   }
 }

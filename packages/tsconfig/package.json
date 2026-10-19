@@ -19,8 +19,8 @@
   "dependencies": {
     "@tempel/vitest": "workspace:*",
     "@tsconfig/node22": "^22.0.6",
-    "execa": "^10.0.1",
-    "typescript": "5.9.3"
+    "execa": "^10.1.1",
+    "typescript": "7.0.2"
   },
   "main": "build.js",
   "directories": {
