@@ -19,11 +19,11 @@
   "license": "MIT",
   "description": "Commitlint configuration for Tempel",
   "dependencies": {
-    "@commitlint/cli": "^21.2.2",
-    "@commitlint/config-conventional": "^21.2.2"
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4"
   },
   "devDependencies": {
     "@tempel/vitest": "workspace:*",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.5"
   }
 }
